@@ -1,0 +1,74 @@
+@{
+    ViewData["Title"] = "Quản lý nhà cung cấp";
+}
+
+<div class="box box-primary">
+    <div class="box-body">
+        <!-- Form nhập đầu vào tìm kiếm-->
+        <form>
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Nhập tên nhà cung cấp cần tìm" />
+                <div class="input-group-btn">
+                    <button class="btn btn-info" type="submit">
+                        <i class="fa fa-search"></i>
+                    </button>
+                    <a href="~/Supplier/Create" class="btn btn-primary" style="margin-left: 5px;">
+                        <i class="fa fa-plus"></i>Thêm mới
+                    </a>
+                </div>
+            </div>
+        </form>
+
+        <p style="margin: 10px 0;">Có <b>1,000 </b>nhà cung cấp trong tổng số <b>100</b> trang</p>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped mx-auto">
+                <thead>
+                    <tr class="bg-primary">
+                        <th class="text-center" style="vertical-align: middle;">Mã nhà cung cấp</th>
+                        <th class="text-center" style="vertical-align: middle;">Tên nhà cung cấp</th>
+                        <th class="text-center" style="vertical-align: middle;">Tên liên hệ</th>
+                        <th class="text-center" style="vertical-align: middle;">Tỉnh thành</th>
+                        <th class="text-center" style="vertical-align: middle;">Địa chỉ</th>
+                        <th class="text-center" style="vertical-align: middle;">Số điện thoại</th>
+                        <th class="text-center" style="vertical-align: middle;">Địa chỉ Email</th>
+                        <th class="text-center" style="vertical-align: middle;" style="width: 100px;">Hành động</th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    @for (int i = 1; i <= 10; i++)
+                    {
+                        <tr>
+                            <td class="text-center" style="vertical-align: middle;">#2234121</td>
+                            <td class="text-center" style="vertical-align: middle;">Kamereo</td>
+                            <td class="text-center" style="vertical-align: middle;">Kamereo</td>
+                            <td class="text-center" style="vertical-align: middle;">Thành phố Hồ Chí Minh</td>
+                            <td class="text-center" style="vertical-align: middle;">Tầng 1 – Tòa nhà The Manor Officetel, số 89 đường Nguyễn Hữu Cảnh, Phường 22, quận Bình Thạnh, Thành phố Hồ Chí Minh</td>
+                            <td class="text-center" style="vertical-align: middle;"> 0812463727</td>
+                            <td class="text-center" style="vertical-align: middle;">Kamereo@gmail.com</td>
+                            <td class="text-right text-center" style="vertical-align: middle;">
+                                <a href="~/Supplier/Edit/123" class="btn btn-xs btn-info">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a href="~/Supplier/Delete/123" class="btn btn-xs btn-danger">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+        <div class="text-center">
+            <ul class="pagination">
+                <li><a href="#">1</a></li>  
+                <li class="active"><a href="#">2</a></li>  
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+            </ul>
+        </div>
+    </div>
+
+</div>
