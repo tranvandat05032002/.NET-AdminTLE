@@ -1,3 +1,4 @@
+@model IEnumerable<Shipper>
 @{
     ViewData["Title"] = "Quản lý người giao hàng";
 }
@@ -7,7 +8,7 @@
         <!-- Form nhập đầu vào tìm kiếm-->
         <form>
             <div class="input-group">
-                <input type="text" class="form-control" placeholder="Nhập tên nhà cung cấp cần tìm" />
+                <input type="text" class="form-control" placeholder="Nhập tên nhà cung cấp cần tìm" autofocus name="searchValue" value="@ViewBag.Searchvaue"/>
                 <div class="input-group-btn">
                     <button class="btn btn-info" type="submit">
                         <i class="fa fa-search"></i>
@@ -32,12 +33,12 @@
 
                 </thead>
                 <tbody>
-                    @for (int i = 1; i <= 10; i++)
+                    @foreach (var item in Model)
                     {
                         <tr>
-                            <td class="text-center" style="vertical-align: middle;">#7814521</td>
-                            <td class="text-center" style="vertical-align: middle;">Trần Văn Đạt</td>
-                            <td class="text-center" style="vertical-align: middle;">0911278272</td>
+                            <td class="text-center" style="vertical-align: middle;">#@item.ShipperID</td>
+                            <td class="text-center" style="vertical-align: middle;">@item.ShipperName</td>
+                            <td class="text-center" style="vertical-align: middle;">@item.Phone</td>
                             <td class="text-right text-center" style="vertical-align: middle;">
                                 <a href="~/Shipper/Edit/123" class="btn btn-xs btn-info">
                                     <i class="fa fa-edit"></i>

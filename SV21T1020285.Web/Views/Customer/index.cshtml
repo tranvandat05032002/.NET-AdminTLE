@@ -1,3 +1,4 @@
+@model IEnumerable<Customer>
 @{
     ViewBag.Title = "Quản lý khách hàng";
 }
@@ -7,7 +8,7 @@
         <!-- Form nhập đầu vào tìm kiếm-->
         <form>
             <div class="input-group">
-                <input type="text" class="form-control" placeholder="Nhập tên khách hàng cần tìm" />
+                <input type="text" class="form-control" placeholder="Nhập tên khách hàng cần tìm" autofocus name="searchValue" value="@ViewBag.Searchvaue"/>
                 <div class="input-group-btn">
                     <button class="btn btn-info" type="submit">
                         <i class="fa fa-search"></i>
@@ -30,27 +31,29 @@
                         <th class="text-center" style="vertical-align: middle;">Địa chỉ</th>
                         <th class="text-center" style="vertical-align: middle;">Điện thoại</th>
                         <th class="text-center" style="vertical-align: middle;">Địa chỉ Email</th>
+                         <th class="text-center" style="vertical-align: middle;">Tỉnh thành</th>
                         <th class="text-center" style="vertical-align: middle;">Bị khóa</th>
                         <th class="text-center" style="vertical-align: middle; width: 100px;">Hành động</th>
                     </tr>
 
                 </thead>
                 <tbody>
-                    @for (int i = 1; i <= 10; i++)
+                    @foreach (var item in Model)
                     {
                         <tr>
-                         <td>#1265111</td>
-                            <td class="text-center" style="vertical-align: middle;">Trần Văn Đạt</td>
-                            <td class="text-center" style="vertical-align: middle;">Mua lung tung</td>
-                            <td class="text-center" style="vertical-align: middle;">138 Nguyễn Huệ, Huế</td>
-                            <td class="text-center" style="vertical-align: middle;">0976661557</td>
-                            <td class="text-center" style="vertical-align: middle;">tranvandatevondev0503@gmail.com</td>
-                            <td class="text-center" style="vertical-align: middle;">1</td>
+                         <td class="text-center" style="vertical-align: middle;">#@item.CustomerID</td>
+                            <td class="text-center" style="vertical-align: middle;">@item.CustomerName</td>
+                            <td class="text-center" style="vertical-align: middle;">@item.ContactName</td>
+                            <td class="text-center" style="vertical-align: middle;">@item.Address</td>
+                            <td class="text-center" style="vertical-align: middle;">@item.Phone</td>
+                            <td class="text-center" style="vertical-align: middle;">@item.Email</td>
+                            <td class="text-center" style="vertical-align: middle;">@item.Province</td>
+                            <td class="text-center" style="vertical-align: middle;">@(item.IsLocked ? "x" : "")</td>
                              <td class="text-center" style="vertical-align: middle;">
-                                <a href="~/Customer/Edit/123" class="btn btn-xs btn-info">
+                                <a href="~/Customer/Edit/@item.CustomerID" class="btn btn-xs btn-info">
                                     <i class="fa fa-edit"></i>
                                 </a>
-                                <a href="~/Customer/Delete/123" class="btn btn-xs btn-danger">
+                                <a href="~/Customer/Delete/@item.CustomerID" class="btn btn-xs btn-danger">
                                     <i class="fa fa-trash"></i>
                                 </a>
                             </td>
@@ -62,11 +65,14 @@
         </div>
         <div class="text-center">
             <ul class="pagination">
-                <li><a href="#">1</a></li>  
-                <li class="active"><a href="#">2</a></li>  
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
+                @for(int i = 1; i <= ViewBag.PageCount; i++) {
+                    if(i == ViewBag.Page) {
+                        <li class="active"><a href="#">@i</a></li>  
+                    }
+                    else {
+                        <li><a href="~/Customer?page=@i&searchValue=@ViewBag.SearchValue">@i</a></li>  
+                    }
+                }
             </ul>
         </div>
     </div>

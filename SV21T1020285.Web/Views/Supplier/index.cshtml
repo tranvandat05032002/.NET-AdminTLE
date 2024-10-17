@@ -1,3 +1,4 @@
+@model IEnumerable<Supplier>
 @{
     ViewData["Title"] = "Quản lý nhà cung cấp";
 }
@@ -7,7 +8,7 @@
         <!-- Form nhập đầu vào tìm kiếm-->
         <form>
             <div class="input-group">
-                <input type="text" class="form-control" placeholder="Nhập tên nhà cung cấp cần tìm" />
+                <input type="text" class="form-control" placeholder="Nhập tên nhà cung cấp cần tìm" autofocus name="searchValue" value="@ViewBag.Searchvaue"/>
                 <div class="input-group-btn">
                     <button class="btn btn-info" type="submit">
                         <i class="fa fa-search"></i>
@@ -36,16 +37,16 @@
 
                 </thead>
                 <tbody>
-                    @for (int i = 1; i <= 10; i++)
+                    @foreach (var item in Model)
                     {
                         <tr>
-                            <td class="text-center" style="vertical-align: middle;">#2234121</td>
-                            <td class="text-center" style="vertical-align: middle;">Kamereo</td>
-                            <td class="text-center" style="vertical-align: middle;">Kamereo</td>
-                            <td class="text-center" style="vertical-align: middle;">Thành phố Hồ Chí Minh</td>
-                            <td class="text-center" style="vertical-align: middle;">Tầng 1 – Tòa nhà The Manor Officetel, số 89 đường Nguyễn Hữu Cảnh, Phường 22, quận Bình Thạnh, Thành phố Hồ Chí Minh</td>
-                            <td class="text-center" style="vertical-align: middle;"> 0812463727</td>
-                            <td class="text-center" style="vertical-align: middle;">Kamereo@gmail.com</td>
+                            <td class="text-center" style="vertical-align: middle;">#@item.SupplierID</td>
+                            <td class="text-center" style="vertical-align: middle;">@item.SupplierName</td>
+                            <td class="text-center" style="vertical-align: middle;">@item.ContactName</td>
+                            <td class="text-center" style="vertical-align: middle;">@item.Province</td>
+                            <td class="text-center" style="vertical-align: middle;">@item.Address</td>
+                            <td class="text-center" style="vertical-align: middle;"> @item.Phone</td>
+                            <td class="text-center" style="vertical-align: middle;">@item.Email</td>
                             <td class="text-right text-center" style="vertical-align: middle;">
                                 <a href="~/Supplier/Edit/123" class="btn btn-xs btn-info">
                                     <i class="fa fa-edit"></i>

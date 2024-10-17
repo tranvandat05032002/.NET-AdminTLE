@@ -1,3 +1,4 @@
+@model IEnumerable<Category>
 @{
     ViewData["Title"] = "Quản lý loại hàng";
 }
@@ -6,7 +7,7 @@
         <!-- Form nhập đầu vào tìm kiếm-->
         <form>
             <div class="input-group">
-                <input type="text" class="form-control" placeholder="Nhập tên loại hàng cần tìm" />
+                <input type="text" class="form-control" placeholder="Nhập tên loại hàng cần tìm" autofocus name="searchValue" value="@ViewBag.Searchvaue"/>
                 <div class="input-group-btn">
                     <button class="btn btn-info" type="submit">
                         <i class="fa fa-search"></i>
@@ -31,17 +32,17 @@
 
                 </thead>
                 <tbody>
-                    @for (int i = 1; i <= 10; i++)
+                      @foreach (var item in Model)
                     {
                         <tr>
-                            <td class="text-center" style="vertical-align: middle;">#9871211</td>
-                            <td class="text-center" style="vertical-align: middle;">Đồ ăn</td>
-                            <td class="text-center" style="vertical-align: middle;">Bao gồm các hàng và đồ ăn</td>
+                            <td class="text-center" style="vertical-align: middle;">#@item.CategoryID</td>
+                            <td class="text-center" style="vertical-align: middle;">@item.CategoryName</td>
+                            <td class="text-center" style="vertical-align: middle;">@item.Description</td>
                             <td class="text-right text-center" style="vertical-align: middle;">
-                                <a href="~/Category/Edit/123" class="btn btn-xs btn-info">
+                                <a href="~/Category/Edit/@item.CategoryID" class="btn btn-xs btn-info">
                                     <i class="fa fa-edit"></i>
                                 </a>
-                                <a href="~/Category/Delete/123" class="btn btn-xs btn-danger">
+                                <a href="~/Category/Delete/@item.CategoryID" class="btn btn-xs btn-danger">
                                     <i class="fa fa-trash"></i>
                                 </a>
                             </td>
