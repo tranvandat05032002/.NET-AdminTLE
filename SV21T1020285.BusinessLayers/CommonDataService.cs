@@ -64,11 +64,35 @@ namespace SV21T1020285.BusinessLayers
         public static bool InUsedCustomer(int id) {
             return customerDB.InUse(id);
         }
+        // Category
         public static List<Category> ListOfCategories(out int rowCount, int page = 1, int pageSize = 0, string searchValue = "")
         {
             rowCount = categoryDB.Count(searchValue);
             return categoryDB.List(page, pageSize, searchValue);
         }
+        public static Category? GetCategory(int id) {
+            return categoryDB.Get(id);
+        }
+        /// <summary>
+        /// Bổ sung một khách hàng
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>/
+        public static int AddCategory(Category data) {
+            return categoryDB.Add(data);
+        }
+
+        public static bool UpdateCategory(Category data) {
+            return categoryDB.Update(data);
+        }
+
+        public static bool DeleteCategory(int id) {
+            return categoryDB.Delete(id);
+        }
+        public static bool InUsedCategory(int id) {
+            return categoryDB.InUse(id);
+        }
+        // Supplier
         public static List<Supplier> ListOfSuppliers(out int rowCount, int page = 1, int pageSize = 0, string searchValue = "")
         {
             rowCount = supplierDB.Count(searchValue);

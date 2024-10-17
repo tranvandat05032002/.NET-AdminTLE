@@ -54,11 +54,14 @@
         </div>
         <div class="text-center">
             <ul class="pagination">
-                <li><a href="#">1</a></li>  
-                <li class="active"><a href="#">2</a></li>  
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
+                @for(int i = 1; i <= ViewBag.PageCount; i++) {
+                    if(i == ViewBag.Page) {
+                        <li class="active"><a href="#">@i</a></li>  
+                    }
+                    else {
+                        <li><a href="~/Category?page=@i&searchValue=@ViewBag.SearchValue">@i</a></li>  
+                    }
+                }
             </ul>
         </div>
     </div>
