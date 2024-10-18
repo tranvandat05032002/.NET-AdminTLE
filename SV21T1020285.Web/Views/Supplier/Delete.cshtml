@@ -1,38 +1,39 @@
+@model Supplier
 @{
     ViewBag.Title = "Xóa nhà cung cấp";
 }
 
 <div class="box box-danger">
     <div class="box-body">
-        <form>
+        <form action="~/Supplier/Delete/@Model.SupplierID" method="POST">
             <div class="form-group">
                 <label>Tên nhà cung cấp:</label>
-                <p class="form-control-static form-control">Meteor</p>
+                <p class="form-control-static form-control">@Model.SupplierName</p>
             </div>
             
             <div class="form-group">
                 <label>Tên giao dịch:</label>
-                <p class="form-control-static form-control">Sao băng</p>
+                <p class="form-control-static form-control">@Model.ContactName</p>
             </div>
             
             <div class="form-group">
                 <label>Số điện thoại:</label>
-                <p class="form-control-static form-control">091234567</p>
+                <p class="form-control-static form-control">@Model.Phone</p>
             </div>
 
             <div class="form-group">
                 <label>Email:</label>
-                <p class="form-control-static form-control">meteor@gmail.com</p>
+                <p class="form-control-static form-control">@Model.Email</p>
             </div>
 
             <div class="form-group">
                 <label>Địa chỉ:</label>
-                <p class="form-control-static form-control">11 Nguyễn Huệ</p>
+                <p class="form-control-static form-control">@Model.Address</p>
             </div>
 
             <div class="form-group">
                 <label>Tỉnh thành:</label>
-                <p class="form-control-static form-control">Thừa Thiên Huế</p>
+                <p class="form-control-static form-control">@Model.Province</p>
             </div>
 
             <div class="form-group text-right">

@@ -98,6 +98,29 @@ namespace SV21T1020285.BusinessLayers
             rowCount = supplierDB.Count(searchValue);
             return supplierDB.List(page, pageSize, searchValue);
         }
+        public static Supplier? GetSupplier(int id) {
+            return supplierDB.Get(id);
+        }
+        /// <summary>
+        /// Bổ sung một khách hàng
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>/
+        public static int AddSupplier(Supplier data) {
+            return supplierDB.Add(data);
+        }
+
+        public static bool UpdateSupplier(Supplier data) {
+            return supplierDB.Update(data);
+        }
+
+        public static bool DeleteSupplier(int id) {
+            return supplierDB.Delete(id);
+        }
+        public static bool InUsedSupplier(int id) {
+            return supplierDB.InUse(id);
+        }
+        //Shipper
         public static List<Shipper> ListOfShippers(out int rowCount, int page = 1, int pageSize = 0, string searchValue = "")
         {
             rowCount = shipperDB.Count(searchValue);
