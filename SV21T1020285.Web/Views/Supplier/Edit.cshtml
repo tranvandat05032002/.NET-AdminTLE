@@ -33,7 +33,7 @@
 
             <div class="form-group">
                 <label>Tỉnh thành:</label>
-                <select class="form-control" name="@nameof(Model.Province)">
+                <select class="form-control select2" name="@nameof(Model.Province)">
                     <option selected disabled>Chọn tỉnh thành</option>
                     @foreach(var item in  SV21T1020285.BusinessLayers.CommonDataService.ListOfProvinces()) {
                         if(item.ProvinceName == Model.Province) {

@@ -8,6 +8,7 @@ namespace SV21T1020285.BusinessLayers
     {
         private static readonly ISimpleQueryDAL<Province> provinceDB;
         private static readonly ICommonDAL<Customer> customerDB;
+        private static readonly ICommonDAL<Employee> employeeDB;
         private static readonly ICommonDAL<Category> categoryDB;
         private static readonly ICommonDAL<Supplier> supplierDB;
         private static readonly ICommonDAL<Shipper> shipperDB;
@@ -26,6 +27,7 @@ namespace SV21T1020285.BusinessLayers
             categoryDB = new CategoryDAL(connectionString);
             supplierDB = new SupplierDAL(connectionString);
             shipperDB = new ShipperDAL(connectionString);
+            employeeDB = new EmployeeDAL(connectionString);
             provinceDB = new ProvinceDAL(connectionString);
         }
 
@@ -147,6 +149,34 @@ namespace SV21T1020285.BusinessLayers
         }
         public static bool InUsedShipper(int id) {
             return shipperDB.InUse(id);
+        }
+        // Employee
+        public static List<Employee> ListOfEmployees(out int rowCount, int page = 1, int pageSize = 0, string searchValue = "")
+        {
+            rowCount = shipperDB.Count(searchValue);
+            return employeeDB.List(page, pageSize, searchValue);
+        }
+        public static Employee? GetEmployee(int id) {
+            return employeeDB.Get(id);
+        }
+        /// <summary>
+        /// Bổ sung một nhân viên
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>/
+        public static int AddEmployee(Employee data) {
+            return employeeDB.Add(data);
+        }
+
+        public static bool UpdateEmployee(Employee data) {
+            return employeeDB.Update(data);
+        }
+
+        public static bool DeleteEmployee(int id) {
+            return employeeDB.Delete(id);
+        }
+        public static bool InUsedEmployee(int id) {
+            return employeeDB.InUse(id);
         }
         //Province
         public static List<Province> ListOfProvinces()

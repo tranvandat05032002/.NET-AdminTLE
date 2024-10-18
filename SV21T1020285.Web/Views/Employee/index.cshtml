@@ -1,3 +1,4 @@
+@model IEnumerable<Employee>
 @{
     ViewBag.Title = "Quản lý nhân viên";
 }
@@ -11,6 +12,7 @@
                        type="text"
                        class="form-control"
                        placeholder="Nhập tên nhân viên cần tìm"
+                       value="@ViewBag.Searchvaue"
                        autofocus />
                 <div class="input-group-btn">
                     <button class="btn btn-info" type="submit">
@@ -28,17 +30,17 @@
             Có <strong>100</strong> nhân viên trong tổng số <strong>10</strong> trang.
         </p>
         <div class="row">
-            @for (int i = 1; i <= 9; i++)
+            @foreach (var item in Model)
             {
                 <div class="col-sm-4">
                     <div class="box box-info">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Nguyễn Thị Thanh Ngân</h3>
+                            <h3 class="box-title">@item.FullName</h3>
                             <div class="box-tools pull-right">
-                                <a class="btn btn-box-tool" href="~/Employee/Edit/123">
+                                <a class="btn btn-box-tool" href="~/Employee/Edit/@item.EmployeeID">
                                     <i class="fa fa-edit text-primary"></i>
                                 </a>
-                                <a class="btn btn-box-tool" href="~/Employee/Delete/123">
+                                <a class="btn btn-box-tool" href="~/Employee/Delete/@item.EmployeeID">
                                     <i class="fa fa-trash text-danger"></i>
                                 </a>
                             </div>
@@ -46,18 +48,18 @@
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-sm-4">
-                                    <img class="profile-user-img img-responsive img-bordered" src="~/themes/dist/img/user4-128x128.jpg">
+                                    <img class="profile-user-img img-responsive img-bordered" src="~/images/employee/@(string.IsNullOrWhiteSpace(item.Photo) ? "default-image.gif" : item.Photo)">
                                 </div>
                                 <div class="col-sm-8">
                                     <ul class="list-group list-group-unbordered">
                                         <li class="list-group-item">
-                                            <i class="fa fa-birthday-cake"></i> @(DateTime.Now.ToString("MM/dd/yyyy"))
+                                            <i class="fa fa-birthday-cake"></i> @(item.BirthDate.ToString("dd/MM/yyyy"))
                                         </li>
                                         <li class="list-group-item">
-                                            <i class="fa fa-phone"></i> 06269045225
+                                            <i class="fa fa-phone"></i> @item.Phone
                                         </li>
                                         <li class="list-group-item">
-                                            <i class="fa fa-envelope"></i> thanhngan@mycompany.com
+                                            <i class="fa fa-envelope"></i> @item.Email
                                         </li>
                                     </ul>
                                 </div>
@@ -70,11 +72,14 @@
 
         <div class="text-center">
             <ul class="pagination">
-                <li><a href="#">1</a></li>
-                <li class="active"><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
+                @for(int i = 1; i <= ViewBag.PageCount; i++) {
+                    if(i == ViewBag.Page) {
+                        <li class="active"><a href="#">@i</a></li>  
+                    }
+                    else {
+                        <li><a href="~/Employee?page=@i&searchValue=@ViewBag.SearchValue">@i</a></li>  
+                    }
+                }
             </ul>
         </div>
 
