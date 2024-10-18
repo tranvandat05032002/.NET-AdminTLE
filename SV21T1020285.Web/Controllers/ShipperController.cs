@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SV21T1020285.BusinessLayers;
+using SV21T1020285.DomainModels;
 namespace MvcMovie.Controllers;
 
 public class ShipperController : Controller
@@ -27,13 +28,35 @@ public class ShipperController : Controller
     }
      public IActionResult Create() {
         ViewBag.Title = "Bổ sung người giao hàng";
-        return View("Edit");
+        var data = new Shipper() {
+                ShipperID = 0
+        };
+        return View("Edit", data);
     }
     public IActionResult Edit(int id = 0) { // public IActionResult Edit(int id) => View();
         ViewBag.Title = "Cập nhật người giao hàng";
-        return View();
+        var data = CommonDataService.GetShipper(id);
+        if(data == null) return RedirectToAction("Index");
+        return View(data);
+    }
+    [HttpPost]
+    public IActionResult Save(Shipper data) {
+        //TODO: Kiểm soát dữ liệu đầu vào --> validation
+        if(data.ShipperID == 0) {
+            CommonDataService.AddShipper(data);
+        }
+        else {
+            CommonDataService.UpdateShipper(data);
+        }
+        return RedirectToAction("Index");
     }
     public IActionResult Delete(int id) { // public IActionResult Delete(int id) => View();
-        return View();
+        if(Request.Method == "POST") {
+            CommonDataService.DeleteShipper(id);
+            return RedirectToAction("Index");
+        }
+        var data = CommonDataService.GetShipper(id);
+        if(data == null) return RedirectToAction("Index");
+        return View(data);
     }
 }

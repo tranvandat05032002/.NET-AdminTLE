@@ -40,10 +40,10 @@
                             <td class="text-center" style="vertical-align: middle;">@item.ShipperName</td>
                             <td class="text-center" style="vertical-align: middle;">@item.Phone</td>
                             <td class="text-right text-center" style="vertical-align: middle;">
-                                <a href="~/Shipper/Edit/123" class="btn btn-xs btn-info">
+                                <a href="~/Shipper/Edit/@item.ShipperID" class="btn btn-xs btn-info">
                                     <i class="fa fa-edit"></i>
                                 </a>
-                                <a href="~/Shipper/Delete/123" class="btn btn-xs btn-danger">
+                                <a href="~/Shipper/Delete/@item.ShipperID" class="btn btn-xs btn-danger">
                                     <i class="fa fa-trash"></i>
                                 </a>
                             </td>
@@ -55,11 +55,14 @@
         </div>
         <div class="text-center">
             <ul class="pagination">
-                <li><a href="#">1</a></li>  
-                <li class="active"><a href="#">2</a></li>  
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
+                @for(int i = 1; i <= ViewBag.PageCount; i++) {
+                    if(i == ViewBag.Page) {
+                        <li class="active"><a href="#">@i</a></li>  
+                    }
+                    else {
+                        <li><a href="~/Shipper?page=@i&searchValue=@ViewBag.SearchValue">@i</a></li>  
+                    }
+                }
             </ul>
         </div>
     </div>

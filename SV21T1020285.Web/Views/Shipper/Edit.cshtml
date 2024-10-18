@@ -1,16 +1,18 @@
+@model Shipper
 @{
 
 }
 <div class="box box-primary">
     <div class="box-body">
-        <form action="/action_page.php">
+      <form action="~/Shipper/Save" method="POST">
+      <input type="hidden" name="@nameof(Model.ShipperID)" value="@Model.ShipperID">
   <div class="form-group">
     <label>Tên shipper:</label>
-    <input type="text" class="form-control" autofocus>
+    <input type="text" class="form-control" autofocus name="@nameof(Model.ShipperName)" value="@Model.ShipperName">
   </div>
   <div class="form-group">
     <label>Số điện thoại:</label>
-    <input type="text" class="form-control">
+    <input type="text" class="form-control" name="@nameof(Model.Phone)" value="@Model.Phone">
   </div>
   <div class="form-group text-right">
         <button type="submit" class="btn btn-primary">

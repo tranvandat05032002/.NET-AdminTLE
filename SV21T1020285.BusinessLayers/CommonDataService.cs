@@ -102,7 +102,7 @@ namespace SV21T1020285.BusinessLayers
             return supplierDB.Get(id);
         }
         /// <summary>
-        /// Bổ sung một khách hàng
+        /// Bổ sung một nhà cung cấp
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>/
@@ -126,6 +126,29 @@ namespace SV21T1020285.BusinessLayers
             rowCount = shipperDB.Count(searchValue);
             return shipperDB.List(page, pageSize, searchValue);
         }
+        public static Shipper? GetShipper(int id) {
+            return shipperDB.Get(id);
+        }
+        /// <summary>
+        /// Bổ sung một người giao hàng
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>/
+        public static int AddShipper(Shipper data) {
+            return shipperDB.Add(data);
+        }
+
+        public static bool UpdateShipper(Shipper data) {
+            return shipperDB.Update(data);
+        }
+
+        public static bool DeleteShipper(int id) {
+            return shipperDB.Delete(id);
+        }
+        public static bool InUsedShipper(int id) {
+            return shipperDB.InUse(id);
+        }
+        //Province
         public static List<Province> ListOfProvinces()
         {
             return provinceDB.List();
