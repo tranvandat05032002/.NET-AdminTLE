@@ -1,30 +1,41 @@
-using Microsoft.AspNetCore.Mvc;
 using SV21T1020285.BusinessLayers;
 using SV21T1020285.DomainModels;
+using SV21T1020285.Web.Models;
+using Microsoft.AspNetCore.Mvc;
+using SV21T1020285.Web.AppCodes;
 namespace MvcMovie.Controllers;
 
 public class CategoryController : Controller
 {
     public const int PAGE_SIZE = 5;
-
-
-    public IActionResult Index(int page = 1, string searchValue = "")
+    private const string CATEGORY_SEARCH_CONDITION = "CategorySearchCondition";
+    public IActionResult Index()
     {
+        PaginationSearchInput? condition = ApplicationContext.GetSessionData<PaginationSearchInput>(CATEGORY_SEARCH_CONDITION);
+    if(condition == null)
+        condition = new PaginationSearchInput() {
+            Page = 1,
+            PageSize = PAGE_SIZE,
+            SearchValue = ""
+        };
+
+    return  View(condition);
+    }
+
+    public IActionResult Search(PaginationSearchInput condition) {
         int rowCount;
-        var data = CommonDataService.ListOfCategories(out rowCount, page, PAGE_SIZE, searchValue ?? "");
+        var data = CommonDataService.ListOfCategories(out rowCount, condition.Page, condition.PageSize, condition.SearchValue ?? "");
+        CategorySearchResult model = new CategorySearchResult() {
+            Page = condition.Page,
+            PageSize = condition.PageSize,
+            SearchValue = condition.SearchValue ?? "",
+            RowCount = rowCount,
+            Data = data
+        };
 
-        int pageCount = rowCount / PAGE_SIZE;
-        if (rowCount % PAGE_SIZE > 0)
-        {
-            pageCount += 1;
-        }
+        ApplicationContext.SetSessionData(CATEGORY_SEARCH_CONDITION, condition);
 
-        ViewBag.Page = page;
-        ViewBag.RowCount = rowCount;
-        ViewBag.PageCount = pageCount;
-        ViewBag.searchValue = searchValue;
-
-        return  View(data);
+        return View(model);
     }
      public IActionResult Create() {
         ViewBag.Title = "Bổ sung loại hàng";

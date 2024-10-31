@@ -1,0 +1,49 @@
+@model SV21T1020285.Web.Models.ShipperSearchResult
+@{
+    Layout = null;
+}
+<p style="margin: 10px 0;">Có <b>@Model.RowCount </b>nhà cung cấp trong tổng số <b>@Model.PageCount</b> trang</p>
+<div class="table-responsive">
+    <table class="table table-bordered table-hover table-striped mx-auto">
+        <thead>
+            <tr class="bg-primary">
+                <th class="text-center" style="vertical-align: middle;">Mã Shipper</th>
+                <th class="text-center" style="vertical-align: middle;">Tên Shipper</th>
+                <th class="text-center" style="vertical-align: middle;">Số điện thoại</th>
+                <th class="text-center" style="vertical-align: middle;" style="width: 100px;">Hành động</th>
+            </tr>
+
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Data)
+            {
+                <tr>
+                    <td class="text-center" style="vertical-align: middle;">#@item.ShipperID</td>
+                    <td class="text-center" style="vertical-align: middle;">@item.ShipperName</td>
+                    <td class="text-center" style="vertical-align: middle;">@item.Phone</td>
+                    <td class="text-right text-center" style="vertical-align: middle;">
+                        <a href="~/Shipper/Edit/@item.ShipperID" class="btn btn-xs btn-info">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                        <a href="~/Shipper/Delete/@item.ShipperID" class="btn btn-xs btn-danger">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</div>
+<div class="text-center">
+    <ul class="pagination">
+        @for(int p = 1; p <= Model.PageCount; p++) {
+            if(p == Model.Page) {
+                <li class="active"><a href="#">@p</a></li>  
+            }
+            else {
+                <li><a href="javascript:;" onclick="doSearch(@p)">@p</a></li>  
+            }
+        }
+    </ul>
+</div>

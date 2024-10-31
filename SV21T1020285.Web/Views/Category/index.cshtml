@@ -1,13 +1,14 @@
-@model IEnumerable<Category>
+@model SV21T1020285.Web.Models.PaginationSearchInput
 @{
     ViewData["Title"] = "Quản lý loại hàng";
 }
 <div class="box box-primary">
     <div class="box-body">
         <!-- Form nhập đầu vào tìm kiếm-->
-        <form>
+        <form id="frmSearchInput" action="~/Category/Search" method="GET">
+         <input type = "hidden" name="@nameof(Model.PageSize)" value="@Model.PageSize" />
             <div class="input-group">
-                <input type="text" class="form-control" placeholder="Nhập tên loại hàng cần tìm" autofocus name="searchValue" value="@ViewBag.Searchvaue"/>
+                <input type="text" class="form-control" placeholder="Nhập tên loại hàng cần tìm" autofocus name="@nameof(Model.SearchValue)" value="@Model.SearchValue"/>
                 <div class="input-group-btn">
                     <button class="btn btn-info" type="submit">
                         <i class="fa fa-search"></i>
@@ -18,52 +19,38 @@
                 </div>
             </div>
         </form>
+        <!-- Hiển thị kết quả tìm kiếm -->
+        <div id="searchResult">
 
-        <p style="margin: 10px 0;">Có <b>1,000 </b>loại hàng trong tổng số <b>100</b> trang</p>
-        <div class="table-responsive">
-            <table class="table table-bordered table-hover table-striped mx-auto">
-                <thead>
-                    <tr class="bg-primary">
-                        <th class="text-center" style="vertical-align: middle;">Mã loại hàng </th>
-                        <th class="text-center" style="vertical-align: middle;">Tên loại hàng</th>
-                        <th class="text-center" style="vertical-align: middle;">Mô tả</th>
-                        <th class="text-center" style="vertical-align: middle; width: 100px;">Hành động</th>
-                    </tr>
-
-                </thead>
-                <tbody>
-                      @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td class="text-center" style="vertical-align: middle;">#@item.CategoryID</td>
-                            <td class="text-center" style="vertical-align: middle;">@item.CategoryName</td>
-                            <td class="text-center" style="vertical-align: middle;">@item.Description</td>
-                            <td class="text-right text-center" style="vertical-align: middle;">
-                                <a href="~/Category/Edit/@item.CategoryID" class="btn btn-xs btn-info">
-                                    <i class="fa fa-edit"></i>
-                                </a>
-                                <a href="~/Category/Delete/@item.CategoryID" class="btn btn-xs btn-danger">
-                                    <i class="fa fa-trash"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-
-            </table>
-        </div>
-        <div class="text-center">
-            <ul class="pagination">
-                @for(int i = 1; i <= ViewBag.PageCount; i++) {
-                    if(i == ViewBag.Page) {
-                        <li class="active"><a href="#">@i</a></li>  
-                    }
-                    else {
-                        <li><a href="~/Category?page=@i&searchValue=@ViewBag.SearchValue">@i</a></li>  
-                    }
-                }
-            </ul>
         </div>
     </div>
 
 </div>
+@section scripts {
+    <script>
+        function doSearch(page) {
+            var searchCondition = $("#frmSearchInput").serializeArray();
+            searchCondition.push({name: "page", value: page});
+
+            var action = $("#frmSearchInput").prop("action");
+            var method = $("#frmSearchInput").prop("method");
+
+            $.ajax({
+                url: action,
+                type: method,
+                data: searchCondition,
+                success: function(data) {
+                    $("#searchResult").html(data);
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            doSearch(@Model.Page)
+            $("#frmSearchInput").submit(function(e) {
+                e.preventDefault();
+                doSearch(1);
+            })
+        });
+    </script>
+}

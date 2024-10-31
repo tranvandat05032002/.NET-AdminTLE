@@ -1,6 +1,7 @@
-using Microsoft.AspNetCore.Mvc;
 using SV21T1020285.BusinessLayers;
 using SV21T1020285.DomainModels;
+using SV21T1020285.Web.Models;
+using Microsoft.AspNetCore.Mvc;
 using SV21T1020285.Web.AppCodes;
 namespace MvcMovie.Controllers;
 
@@ -8,25 +9,34 @@ public class CustomerController : Controller
 {
 
     public const int PAGE_SIZE = 10;
+    private const string CUSTOMER_SEARCH_CONDITION = "CustomerSearchCondition";
 
-
-    public IActionResult Index(int page = 1, string searchValue = "")
+    public IActionResult Index()
     {
+        PaginationSearchInput? condition = ApplicationContext.GetSessionData<PaginationSearchInput>(CUSTOMER_SEARCH_CONDITION);
+        if(condition == null)
+            condition = new PaginationSearchInput() {
+                Page = 1,
+                PageSize = PAGE_SIZE,
+                SearchValue = ""
+            };
+ 
+        return  View(condition);
+    }
+    public IActionResult Search(PaginationSearchInput condition) {
         int rowCount;
-        var data = CommonDataService.ListOfCustomers(out rowCount, page, PAGE_SIZE, searchValue ?? "");
+        var data = CommonDataService.ListOfCustomers(out rowCount, condition.Page, condition.PageSize, condition.SearchValue ?? "");
+        CustomerSearchResult model = new CustomerSearchResult() {
+            Page = condition.Page,
+            PageSize = condition.PageSize,
+            SearchValue = condition.SearchValue ?? "",
+            RowCount = rowCount,
+            Data = data
+        };
 
-        int pageCount = rowCount / PAGE_SIZE;
-        if (rowCount % PAGE_SIZE > 0)
-        {
-            pageCount += 1;
-        }
+        ApplicationContext.SetSessionData(CUSTOMER_SEARCH_CONDITION, condition);
 
-        ViewBag.Page = page;
-        ViewBag.RowCount = rowCount;
-        ViewBag.PageCount = pageCount;
-        ViewBag.searchValue = searchValue;
-
-        return  View(data);
+        return View(model);
     }
     public IActionResult Create() {
         ViewBag.Title = "Bổ sung khách hàng";
