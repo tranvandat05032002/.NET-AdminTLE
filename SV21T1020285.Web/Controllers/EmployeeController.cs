@@ -2,11 +2,12 @@ using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using SV21T1020285.BusinessLayers;
 using SV21T1020285.DomainModels;
+using SV21T1020285.Web.AppCodes;
 namespace MvcMovie.Controllers;
 
 public class EmployeeController : Controller
 {
-    public const int PAGE_SIZE = 10;
+    public const int PAGE_SIZE = 20;
     public IActionResult Index(int page = 1, string searchValue = "")
         {
             int rowCount;
@@ -49,15 +50,33 @@ public class EmployeeController : Controller
         }
         [HttpPost]
         public IActionResult Save(Employee data, string _birthDate, IFormFile? uploadPhoto) {
-            // Xu ly ngay
-            DateTime? d = ToDateTime(_birthDate);
+            ViewBag.Title = data.EmployeeID == 0 ? "Bổ sung nhân viên" : "Cập nhật nhân viên";
+            if(string.IsNullOrWhiteSpace(data.FullName))
+                ModelState.AddModelError(nameof(data.FullName), "Tên nhân viên không được bỏ trống");
+            if(string.IsNullOrWhiteSpace(data.Email)) 
+                ModelState.AddModelError(nameof(data.Email), "Vui lòng nhập địa chỉ Email nhân viên");
+            if(string.IsNullOrWhiteSpace(_birthDate)) 
+                ModelState.AddModelError(nameof(_birthDate), "Vui lòng nhập địa chỉ Email nhân viên");
+            
+            DateTime? d = _birthDate.ToDateTime();
             if(d != null){
                 data.BirthDate = d.Value;
+            }
+            else {
+                ModelState.AddModelError(nameof(data.BirthDate), "Ngày sinh không hợp lệ");
+            }
+            if(string.IsNullOrWhiteSpace(data.Phone))
+                data.Phone = "";
+            if(string.IsNullOrWhiteSpace(data.Address))
+                data.Address = "";
+
+            if(!ModelState.IsValid) {
+                return View("Edit", data);
             }
             if(uploadPhoto != null) {
                 string fileName = $"{DateTime.Now.Ticks}--{uploadPhoto.FileName}";
                 string folder = @"/Users/spiderman/Documents/DHKH_2021-2025/LTUDW/SV21T1020285/SV21T1020285.Web/wwwroot/images/employee";
-                string filePath = Path.Combine(folder, fileName);
+                string filePath = Path.Combine(ApplicationContext.WebRootPath, @"images/employee", fileName);
                 using(var stream = new FileStream(filePath, FileMode.Create)) {
                     uploadPhoto.CopyTo(stream);
                 }
@@ -65,10 +84,19 @@ public class EmployeeController : Controller
             }
             //TODO: Kiểm soát dữ liệu đầu vào --> validation
             if(data.EmployeeID == 0){ 
-                CommonDataService.AddEmployee(data);
+                
+                int id = CommonDataService.AddEmployee(data);
+                if(id <= 0) {
+                    ModelState.AddModelError(nameof(data.Email), "Email đã tồn tại");
+                    return View("Edit", data);
+                }
             }
             else {
-                CommonDataService.UpdateEmployee(data);
+                bool result = CommonDataService.UpdateEmployee(data);
+                if(!result) {
+                    ModelState.AddModelError(nameof(data.Email), "Email đã tồn tại");
+                    return View("Edit", data);
+                }
             }
             return RedirectToAction("Index");
         }

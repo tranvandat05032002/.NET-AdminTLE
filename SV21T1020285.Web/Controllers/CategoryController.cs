@@ -35,12 +35,25 @@ public class CategoryController : Controller
     }
     [HttpPost]
     public IActionResult Save(Category data) {
-        //TODO: Kiểm soát dữ liệu đầu vào --> validation
+        ViewBag.Title = data.CategoryID == 0 ? "Bổ sung loại hàng" : "Cập nhật loại hàng";
+        if(string.IsNullOrWhiteSpace(data.CategoryName))
+            ModelState.AddModelError(nameof(data.CategoryName), "Tên loại hàng không được bỏ trống");
+        if(!ModelState.IsValid) {
+            return View("Edit", data);
+        }
         if(data.CategoryID == 0){ 
-            CommonDataService.AddCategory(data);
+            int id = CommonDataService.AddCategory(data);
+            if(id <= 0) {
+                ModelState.AddModelError(nameof(data.CategoryName), "Tên loại hàng đã tồn tại");
+                return View("Edit", data);
+            }
         }
         else {
-            CommonDataService.UpdateCategory(data);
+            bool result = CommonDataService.UpdateCategory(data);
+            if(!result) {
+                ModelState.AddModelError(nameof(data.CategoryName), "Tên loại hàng đã tồn tại");
+                return View("Edit", data);
+            }
         }
         return RedirectToAction("Index");
     }

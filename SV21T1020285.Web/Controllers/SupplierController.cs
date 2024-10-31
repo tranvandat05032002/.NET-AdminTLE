@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SV21T1020285.BusinessLayers;
 using SV21T1020285.DomainModels;
+using SV21T1020285.Web.AppCodes;
 namespace MvcMovie.Controllers;
 
 public class SupplierController : Controller
@@ -44,12 +45,36 @@ public class SupplierController : Controller
         }
         [HttpPost]
         public IActionResult Save(Supplier data) {
-            //TODO: Kiểm soát dữ liệu đầu vào --> validation
+            ViewBag.Title = data.SupplierID == 0 ? "Bổ sung nhà cung cấp" : "Cập nhật nhà cung cấp";
+            if(string.IsNullOrWhiteSpace(data.SupplierName))
+                ModelState.AddModelError(nameof(data.SupplierName), "Tên nhà cung cấp không được bỏ trống");
+            if(string.IsNullOrWhiteSpace(data.ContactName)) 
+                ModelState.AddModelError(nameof(data.ContactName), "Tên giao dịch không được bỏ trống");
+            if(string.IsNullOrWhiteSpace(data.Phone))
+                ModelState.AddModelError(nameof(data.Phone), "Vui lòng nhập số điện thoại");
+            if(string.IsNullOrWhiteSpace(data.Email)) 
+                ModelState.AddModelError(nameof(data.Email), "Vui lòng nhập địa chỉ Email nhà cung cấp");
+            if(string.IsNullOrWhiteSpace(data.Address))
+                ModelState.AddModelError(nameof(data.Address), "Vui lòng nhập địa chỉ");
+            if(string.IsNullOrWhiteSpace(data.Province))
+                ModelState.AddModelError(nameof(data.Province), "Vui lòng chọn Tỉnh/Thành của bạn");
+            
+            if(!ModelState.IsValid) 
+                return View("Edit", data); // Trả dữ liệu về cho view
             if(data.SupplierID == 0) {
-                CommonDataService.AddSupplier(data);
+                int id = CommonDataService.AddSupplier(data);
+                if(id <= 0) {
+                    ModelState.AddModelError(nameof(data.Email), "Email đã tồn tại");
+                    return View("Edit", data);
+                }
             }
             else {
-                CommonDataService.UpdateSupplier(data);
+                
+                bool result = CommonDataService.UpdateSupplier(data);
+                if(!result) {
+                    ModelState.AddModelError(nameof(data.Email), "Email đã tồn tại");
+                    return View("Edit", data);
+                }
             }
             return RedirectToAction("Index");
         }

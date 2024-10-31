@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-namespace Sv21T1020285.Controllers
+namespace SV21T1020285.Controllers
 {
     public class AccountController : Controller
     {

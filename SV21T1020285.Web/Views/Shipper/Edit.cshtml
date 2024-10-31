@@ -9,10 +9,12 @@
   <div class="form-group">
     <label>Tên shipper:</label>
     <input type="text" class="form-control" autofocus name="@nameof(Model.ShipperName)" value="@Model.ShipperName">
+    @Html.ValidationMessage(nameof(Model.ShipperName))
   </div>
   <div class="form-group">
     <label>Số điện thoại:</label>
     <input type="text" class="form-control" name="@nameof(Model.Phone)" value="@Model.Phone">
+    @Html.ValidationMessage(nameof(Model.Phone))
   </div>
   <div class="form-group text-right">
         <button type="submit" class="btn btn-primary">

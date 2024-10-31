@@ -17,11 +17,15 @@ namespace SV21T1020285.DataLayers.SQL_Server
         {
             int id = 0;
             using(var connection = OpenConnection()) {
-                var sql = @"insert into Customers(
-                            CustomerName, ContactName, Province, Address, Phone, Email, IsLocked)
-                            values(@CustomerName, @ContactName, @Province, @Address, @Phone, @Email, @IsLocked)
-                            select scope_identity();
-                            ";
+                var sql = @"if exists(select * from Customers where Email = @Email)
+                                select -1;
+                            else
+                                begin
+                                    insert into Customers(
+                                    CustomerName, ContactName, Province, Address, Phone, Email, IsLocked)
+                                    values(@CustomerName, @ContactName, @Province, @Address, @Phone, @Email, @IsLocked)
+                                    select scope_identity();
+                                end";
                 var parameters = new {
                     CustomerName = data.CustomerName ?? "",
                     ContactName = data.ContactName ?? "",
@@ -34,7 +38,6 @@ namespace SV21T1020285.DataLayers.SQL_Server
                 id = connection.ExecuteScalar<int>(sql, parameters, commandType: CommandType.Text);
                 connection.Close();
             }
-            // throw new NotImplementedException();
             return id;
         }
 
@@ -137,17 +140,18 @@ namespace SV21T1020285.DataLayers.SQL_Server
         {
             bool result = false;
             using (var connection = OpenConnection()) {
-                var sql = @"
-                            update Customers
-                            set CustomerName = @CustomerName,
-                                ContactName = @ContactName,
-                                Province = @Province,
-                                Address = @Address,
-                                Phone = @Phone,
-                                Email = @Email,
-                                IsLocked = @IsLocked
-                            where CustomerID = @CustomerID 
-                        ";
+                var sql = @"if not exists(select * from Customers where CustomerId <> @CustomerId and Email = @Email)
+                            begin
+                                update Customers
+                                set CustomerName = @CustomerName,
+                                    ContactName = @ContactName,
+                                    Province = @Province,
+                                    Address = @Address,
+                                    Phone = @Phone,
+                                    Email = @Email,
+                                    IsLocked = @IsLocked
+                                where CustomerID = @CustomerID 
+                            end";
                 var parameters = new {
                     CustomerID = data.CustomerID,
                     CustomerName = data.CustomerName ?? "",

@@ -17,10 +17,16 @@ namespace SV21T1020285.DataLayers.SQL_Server
         {
             int id = 0;
             using(var connection = OpenConnection()) {
-                var sql = @"insert into Suppliers(
-                            SupplierName, ContactName, Province, Address, Phone, Email)
-                            values(@SupplierName, @ContactName, @Province, @Address, @Phone, @Email)
-                            select scope_identity();
+                var sql = @"if exists(select * from Employees where Email = @Email)
+                                select -1;
+                            else
+                                begin
+                                    insert into Suppliers(
+                                    SupplierName, ContactName, Province, Address, Phone, Email)
+                                    values(@SupplierName, @ContactName, @Province, @Address, @Phone, @Email)
+                                    select scope_identity();
+                                end
+
                             ";
                 var parameters = new {
                     SupplierName = data.SupplierName ?? "",
@@ -131,15 +137,17 @@ namespace SV21T1020285.DataLayers.SQL_Server
         {
             bool result = false;
             using (var connection = OpenConnection()) {
-                var sql = @"
-                            update Suppliers
-                            set SupplierName = @SupplierName,
-                                ContactName = @ContactName,
-                                Province = @Province,
-                                Address = @Address,
-                                Phone = @Phone,
-                                Email = @Email
-                            where SupplierID = @SupplierID
+                var sql = @"if not exists(select * from Suppliers where SupplierId <> @SupplierId and Email = @Email)
+                            begin
+                                update Suppliers
+                                set SupplierName = @SupplierName,
+                                    ContactName = @ContactName,
+                                    Province = @Province,
+                                    Address = @Address,
+                                    Phone = @Phone,
+                                    Email = @Email
+                                where SupplierID = @SupplierID
+                            end
                         ";
                 var parameters = new {
                     SupplierID = data.SupplierID,

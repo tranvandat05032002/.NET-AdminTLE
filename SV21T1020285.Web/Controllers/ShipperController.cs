@@ -41,12 +41,27 @@ public class ShipperController : Controller
     }
     [HttpPost]
     public IActionResult Save(Shipper data) {
-        //TODO: Kiểm soát dữ liệu đầu vào --> validation
+        ViewBag.Title = data.ShipperID == 0 ? "Bổ sung người giao hàng" : "Cập nhật người giao hàng";
+        if(string.IsNullOrWhiteSpace(data.ShipperName))
+            ModelState.AddModelError(nameof(data.ShipperName), "Tên người giao hàng không được bỏ trống");
+        if(string.IsNullOrWhiteSpace(data.Phone)) 
+            ModelState.AddModelError(nameof(data.Phone), "Vui lòng nhập số điện thoại người giao hàng");
+        if(!ModelState.IsValid) {
+                return View("Edit", data);
+        }    
         if(data.ShipperID == 0) {
-            CommonDataService.AddShipper(data);
+            int id = CommonDataService.AddShipper(data);
+            if(id <= 0) {
+                ModelState.AddModelError(nameof(data.Phone), "Số điện thoại đã tồn tại");
+                return View("Edit", data);
+            }
         }
         else {
-            CommonDataService.UpdateShipper(data);
+            bool result = CommonDataService.UpdateShipper(data);
+            if(!result) {
+                ModelState.AddModelError(nameof(data.Phone), "Số điện thoại đã tồn tại");
+                return View("Edit", data);
+            }
         }
         return RedirectToAction("Index");
     }

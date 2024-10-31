@@ -17,9 +17,14 @@ namespace SV21T1020285.DataLayers.SQL_Server
         {
             int id = 0;
             using(var connection = OpenConnection()) {
-                var sql = @"insert into Shippers(ShipperName, Phone)
-                            values(@ShipperName, @Phone)
-                            select scope_identity();
+                var sql = @"if exists(select * from Shippers where Phone = @Phone)
+                                select -1;
+                            else
+                                begin
+                                    insert into Shippers(ShipperName, Phone)
+                                    values(@ShipperName, @Phone)
+                                    select scope_identity();
+                                end
                             ";
                 var parameters = new {
                     ShipperName = data.ShipperName ?? "",
@@ -83,7 +88,7 @@ namespace SV21T1020285.DataLayers.SQL_Server
             bool result = false;
             using(var connection = OpenConnection()) {
                 var sql = @"
-                            if exists(select *from Shippers where ShipperID = @ShipperID)
+                            if exists(select *from Orders where ShipperID = @ShipperID)
                                 select 1
                             else 
                                 select 0";
@@ -127,11 +132,13 @@ namespace SV21T1020285.DataLayers.SQL_Server
         {
              bool result = false;
             using (var connection = OpenConnection()) {
-                var sql = @"
-                            update Shippers
-                            set ShipperName = @ShipperName,
-                                Phone = @Phone
-                            where ShipperID = @ShipperID 
+                var sql = @"if not exists(select * from Shippers where ShipperId <> @ShipperId and Phone = @Phone)
+                            begin 
+                                update Shippers
+                                set ShipperName = @ShipperName,
+                                    Phone = @Phone
+                                where ShipperID = @ShipperID 
+                            end
                         ";
                 var parameters = new {
                     ShipperID = data.ShipperID,
