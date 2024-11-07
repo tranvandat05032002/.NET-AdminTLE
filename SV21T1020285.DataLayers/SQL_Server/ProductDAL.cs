@@ -75,14 +75,9 @@ namespace SV21T1020285.DataLayers.SQL_Server
             int id = 0;
             using (var connection = OpenConnection())
             {
-                var sql = @"if exists (select * from ProductPhotos where Photo = @Photo)
-                                select -1;
-                            else
-                                begin
-                                    insert into ProductPhotos(ProductID, Photo, Description, DisplayOrder, IsHidden)
-                                    values (@ProductID, @Photo, @Description, @DisplayOrder, @IsHidden)
-                                    select scope_identity()
-                                end";
+                var sql = @" insert into ProductPhotos(ProductID, Photo, Description, DisplayOrder, IsHidden)
+                            values (@ProductID, @Photo, @Description, @DisplayOrder, @IsHidden)
+                            select scope_identity()";
                 var parameters = new
                 {
                     ProductID = data.ProductID,
@@ -134,7 +129,7 @@ namespace SV21T1020285.DataLayers.SQL_Server
                 {
                     productID
                 };
-                result = connection.Execute(sql: sql, param: parameters, commandType: CommandType.Text) > 0;
+                result = connection.Execute(sql, parameters, commandType: CommandType.Text) > 0;
                 connection.Close();
             }
             return result;
@@ -230,7 +225,7 @@ namespace SV21T1020285.DataLayers.SQL_Server
             bool result = false;
             using (var connection = OpenConnection())
             {
-                var sql = @"if exists(select * from Orders where ProductID = @ProductID)
+                var sql = @"if exists(select * from OrderDetails where ProductID = @ProductID)
                                 select 1
                             else
                                 select 0";
@@ -301,7 +296,10 @@ namespace SV21T1020285.DataLayers.SQL_Server
             List<ProductPhoto> data = new List<ProductPhoto>();
             using (var connection = OpenConnection())
             {
-                var sql = "select * from ProductPhotos where ProductID = @ProductID";
+                var sql = @"select *
+                            from ProductPhotos as pt
+                            where pt.ProductID = @ProductID
+                            order by pt.DisplayOrder ASC";
                 var parameters = new
                 {
                     productID
@@ -317,7 +315,7 @@ namespace SV21T1020285.DataLayers.SQL_Server
             bool result = false;
             using (var connection = OpenConnection())
             {
-                var sql = @"if not exists (select * from Products where ProductID <> @ProductID)
+                var sql = @"if not exists (select * from Products where ProductID <> @ProductID and ProductName = @ProductName)
                             begin
                                 update Products
                                 set ProductName = @ProductName,

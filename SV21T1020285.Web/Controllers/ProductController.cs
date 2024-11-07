@@ -1,3 +1,5 @@
+using System;
+using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using SV21T1020285.BusinessLayers;
 using SV21T1020285.DomainModels;
@@ -51,19 +53,80 @@ public class ProductController : Controller
 
         public IActionResult Create()
         {
-            ViewBag.Title = "Bổ sung mặt hàng";
-            return View("Edit");
+            ViewBag.Title = "Bổ sung sản phẩm";
+            var data = new Product() {
+                    ProductID = 0,
+                     Photo = "abc.png",
+                    IsSelling = true
+            };
+            return View("Edit", data);
         }
 
         public IActionResult Edit(int id = 0)
         {
-            ViewBag.Title = "Cập nhật thông tin mặt hàng";
-            return View();
+             ViewBag.Title = "Cập nhật sản phẩm";
+            var data = ProductDataService.GetProduct(id);
+            if(data == null) return RedirectToAction("Index");
+            return View(data);
         }
+
+        [HttpPost]
+        public IActionResult Save(Product data, IFormFile? uploadPhoto) {
+            ViewBag.Title = data.ProductID == 0 ? "Bổ sung sản phẩm" : "Cập nhật sản phẩm";
+            if(string.IsNullOrWhiteSpace(data.ProductName)) 
+                ModelState.AddModelError(nameof(data.ProductName), "Tên sản phẩm không được bỏ trống");
+            if(string.IsNullOrWhiteSpace(data.ProductDescription))
+                data.ProductDescription = "";
+            if (data.CategoryID == 0)
+                ModelState.AddModelError(nameof(data.CategoryID), "Vui lòng chọn loại hàng");
+            if (data.SupplierID == 0)
+                ModelState.AddModelError(nameof(data.SupplierID), "Vui lòng chọn nhà cung cấp");
+            if(string.IsNullOrWhiteSpace(data.Unit)) 
+                ModelState.AddModelError(nameof(data.Unit), "Đơn vị tính không được để trống");
+            // TODO: Validation Price
+            if(!ModelState.IsValid) {
+                return View("Edit", data);
+            }
+
+            if(uploadPhoto != null) {
+                string fileName = $"{DateTime.Now.Ticks}--{uploadPhoto.FileName}";
+                string folder = @"~/images/products"; // Alias Path
+                string filePath = Path.Combine(ApplicationContext.WebRootPath, @"images/products", fileName);
+                using(var stream = new FileStream(filePath, FileMode.Create)) {
+                    uploadPhoto.CopyTo(stream);
+                }
+                data.Photo = fileName;
+            }
+
+            //TODO: Kiểm soát dữ liệu đầu vào --> validation
+            if(data.ProductID == 0){ 
+                
+                int id = ProductDataService.AddProduct(data);
+                if(id <= 0) {
+                    ModelState.AddModelError(nameof(data.ProductName), "Sản phẩm đã tồn tại");
+                    return View("Edit", data);
+                }
+            }
+            else {
+                bool result = ProductDataService.UpdateProduct(data);
+                if(!result) {
+                    ModelState.AddModelError(nameof(data.ProductName), "Sản phẩm đã tồn tại");
+                    return View("Edit", data);
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
 
         public IActionResult Delete(int id = 0)
         {
-            return View();
+             if(Request.Method == "POST") {
+                ProductDataService.DeleteProduct(id);
+                return RedirectToAction("Index");
+            }
+            var data = ProductDataService.GetProduct(id);
+            if(data == null) return RedirectToAction("Index");
+            return View(data);
         }
 
         public IActionResult Photo(int id = 0, string method = "", int photoId = 0)
