@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using SV21T1020285.BusinessLayers;
 using SV21T1020285.DomainModels;
 using SV21T1020285.Web.Models;
-using Microsoft.AspNetCore.Mvc;
 using SV21T1020285.Web.AppCodes;
 namespace MvcMovie.Controllers;
 

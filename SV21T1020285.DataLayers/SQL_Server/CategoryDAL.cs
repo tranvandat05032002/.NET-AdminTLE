@@ -5,7 +5,7 @@ using System.Data;
 
 namespace SV21T1020285.DataLayers.SQL_Server
 {
-    public class CategoryDAL : BaseDAL, ICommonDAL<Category>
+    public class CategoryDAL : BaseDAL, ICommonDAL<Category>, ISimpleQueryDAL<Category>
     {
         public CategoryDAL(string connectionString) : base(connectionString)
         {
@@ -99,6 +99,16 @@ namespace SV21T1020285.DataLayers.SQL_Server
                 connection.Close();
             }
             return result;
+        }
+
+        public List<Category> List()
+        {
+           List<Category> data = new List<Category>();
+            using (var connection = OpenConnection()) {
+                var sql = @"select * from Categories";
+                data = connection.Query<Category>(sql: sql, commandType: System.Data.CommandType.Text).ToList();
+            }
+            return data;
         }
 
         public List<Category> List(int page = 1, int pageSize = 0, string searchValue = "")

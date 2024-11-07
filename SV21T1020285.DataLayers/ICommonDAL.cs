@@ -14,6 +14,7 @@ namespace SV21T1020285.DataLayers
         /// <param name="searchValue">Giá trị cần tìm (chuỗi rỗng: lấy toàn bộ dữ liệu)</param>
         /// <returns></returns>
         List<T> List(int page = 1, int pageSize = 0, string searchValue = "");
+        // List<T> List(string searchValue = "");
         /// <summary>
         /// Đếm số lượng dòng dữ liệu tìm được
         /// </summary>

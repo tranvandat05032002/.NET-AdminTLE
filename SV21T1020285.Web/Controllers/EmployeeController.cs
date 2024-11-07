@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using SV21T1020285.BusinessLayers;
 using SV21T1020285.DomainModels;
 using SV21T1020285.Web.Models;
-using Microsoft.AspNetCore.Mvc;
 using SV21T1020285.Web.AppCodes;
 namespace MvcMovie.Controllers;
 
@@ -88,7 +87,7 @@ public class EmployeeController : Controller
             }
             if(uploadPhoto != null) {
                 string fileName = $"{DateTime.Now.Ticks}--{uploadPhoto.FileName}";
-                string folder = @"/Users/spiderman/Documents/DHKH_2021-2025/LTUDW/SV21T1020285/SV21T1020285.Web/wwwroot/images/employee";
+                string folder = @"~/images/employee"; // Alias Path
                 string filePath = Path.Combine(ApplicationContext.WebRootPath, @"images/employee", fileName);
                 using(var stream = new FileStream(filePath, FileMode.Create)) {
                     uploadPhoto.CopyTo(stream);

@@ -36,4 +36,13 @@ namespace SV21T1020285.Web.Models
     public class ShipperSearchResult : PaginationSearchResult {
         public required List<Shipper> Data {get; set;}
     }
+    public class ProductSearchResult : PaginationSearchResult {
+        public required List<Product> Data {get; set;}
+
+        // Query có Category và Supplier
+        public int CategoryID {get; set;}
+        public int SupplierID {get; set;}
+        public decimal MinPrice { get; set; }
+        public decimal MaxPrice { get; set; }
+    }
 }

@@ -5,7 +5,7 @@ using System.Data;
 
 namespace SV21T1020285.DataLayers.SQL_Server
 {
-    public class SupplierDAL : BaseDAL, ICommonDAL<Supplier>
+    public class SupplierDAL : BaseDAL, ICommonDAL<Supplier>, ISimpleQueryDAL<Supplier>
     {
         public SupplierDAL(string connectionString) : base(connectionString)
         {
@@ -93,17 +93,27 @@ namespace SV21T1020285.DataLayers.SQL_Server
             bool result = false;
             using(var connection = OpenConnection()) {
                 var sql = @"
-                            if exists(select *from Suppliers where Suppliers = @CustomerID)
+                            if exists(select *from Products where SupplierID = @SupplierID)
                                 select 1
                             else 
                                 select 0";
                 var parameters = new {
-                    CustomerID = id
+                    SupplierID = id
                 };
                 result = connection.ExecuteScalar<bool>(sql: sql, param: parameters, commandType: CommandType.Text);
                 connection.Close();
             }
             return result;
+        }
+
+        public List<Supplier> List()
+        {
+            List<Supplier> data = new List<Supplier>();
+            using (var connection = OpenConnection()) {
+                var sql = @"select * from Suppliers";
+                data = connection.Query<Supplier>(sql: sql, commandType: System.Data.CommandType.Text).ToList();
+            }
+            return data;
         }
 
         public List<Supplier> List(int page = 1, int pageSize = 0, string searchValue = "")

@@ -18,11 +18,7 @@ namespace SV21T1020285.BusinessLayers
         /// </summary>
         static CommonDataService()
         {
-            string connectionString =
-                @"uid=sa;pwd=reallyStrongPwd123;
-                            database=LTUDWDB;
-                            server=localhost;
-                            TrustServerCertificate=true";
+            string connectionString = Configuration.ConnectionString;
             customerDB = new CustomerDAL(connectionString);
             categoryDB = new CategoryDAL(connectionString);
             supplierDB = new SupplierDAL(connectionString);
@@ -67,6 +63,10 @@ namespace SV21T1020285.BusinessLayers
             return customerDB.InUse(id);
         }
         // Category
+        public static List<Category> ListOfCategories()
+        {
+            return categoryDB.List();
+        }
         public static List<Category> ListOfCategories(out int rowCount, int page = 1, int pageSize = 0, string searchValue = "")
         {
             rowCount = categoryDB.Count(searchValue);
@@ -95,6 +95,10 @@ namespace SV21T1020285.BusinessLayers
             return categoryDB.InUse(id);
         }
         // Supplier
+        public static List<Supplier> ListOfSuppliers()
+        {
+            return supplierDB.List();
+        }
         public static List<Supplier> ListOfSuppliers(out int rowCount, int page = 1, int pageSize = 0, string searchValue = "")
         {
             rowCount = supplierDB.Count(searchValue);

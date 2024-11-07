@@ -43,7 +43,7 @@
             </div>
             <div class="form-group">
                 <div class="col-lg-offset-2 col-sm-10">
-                    <img id="Photo" src="~/images/employee/@Model.Photo" class="img img-bordered" style="width:200px">
+                    <img id="Photo" src="~/images/employee/@(string.IsNullOrWhiteSpace(@Model.Photo) ? "default-image.gif" : @Model.Photo)" class="img img-bordered" style="width:200px">
                 </div>
             </div>
             <div class="form-group">

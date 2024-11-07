@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using SV21T1020285.Web.AppCodes;
 
 var builder = WebApplication.CreateBuilder(args);
-
         // Add services to the container.
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddControllersWithViews()
@@ -43,5 +42,7 @@ var builder = WebApplication.CreateBuilder(args);
             context: app.Services.GetRequiredService<IHttpContextAccessor>(),
             enviroment: app.Services.GetRequiredService<IWebHostEnvironment>()
         );
-
+        // khởi tạo cấu hình cho BusinessLayer
+        string connectionString = builder.Configuration.GetConnectionString("LiteCommerceDB");
+        SV21T1020285.BusinessLayers.Configuration.Initialize(connectionString);
         app.Run();

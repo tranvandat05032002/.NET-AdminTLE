@@ -1,11 +1,52 @@
 using Microsoft.AspNetCore.Mvc;
+using SV21T1020285.BusinessLayers;
+using SV21T1020285.DomainModels;
+using SV21T1020285.Web.Models;
+using SV21T1020285.Web.AppCodes;
+
 namespace MvcMovie.Controllers;
 
 public class ProductController : Controller
 {
-     public IActionResult Index()
+    public const int PAGE_SIZE = 10;
+    private const string PRODUCT_SEARCH_CONDITION = "ProductSearchCondition";
+        public IActionResult Index()
         {
-            return View();
+            PaginationProductSearchInput? condition = ApplicationContext.GetSessionData<PaginationProductSearchInput>(PRODUCT_SEARCH_CONDITION);
+            if(condition == null) {
+                condition = new PaginationProductSearchInput() {
+                    Page = 1,
+                    PageSize = PAGE_SIZE,
+                    SearchValue = "",
+                    CategoryID = 0,
+                    SupplierID = 0,
+                    MinPrice = 0m,
+                    MaxPrice = 0m
+                };
+            }
+                
+    
+            return  View(condition);
+        }
+
+        public IActionResult Search(PaginationProductSearchInput condition) {
+            int rowCount;
+            var data = ProductDataService.ListOfProducts(out rowCount, condition.Page, condition.PageSize, condition.SearchValue ?? "", condition.CategoryID, condition.SupplierID, condition.MinPrice, condition.MaxPrice);
+            ProductSearchResult model = new ProductSearchResult() {
+                Page = condition.Page,
+                PageSize = condition.PageSize,
+                SearchValue = condition.SearchValue ?? "",
+                CategoryID = condition.CategoryID,
+                SupplierID = condition.SupplierID,
+                MinPrice = condition.MinPrice,
+                MaxPrice = condition.MaxPrice,
+                RowCount = rowCount,
+                Data = data
+            };
+
+            ApplicationContext.SetSessionData(PRODUCT_SEARCH_CONDITION, condition);
+
+            return View(model);
         }
 
         public IActionResult Create()

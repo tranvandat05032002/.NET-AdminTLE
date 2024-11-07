@@ -21,4 +21,5 @@ namespace SV21T1020285.Web.Models
         /// <value></value>
         public string SearchValue {get; set;} = "";
     }
+
 }
