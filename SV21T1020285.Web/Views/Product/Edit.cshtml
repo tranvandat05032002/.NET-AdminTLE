@@ -84,7 +84,7 @@
             <div class="form-group">
                 <label class="control-label col-sm-2">Giá hàng:</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" name="@nameof(Model.Price)" value="@Model.Price">
+                    <input type="text" class="form-control number-separator" name="@nameof(Model.Price)" value="@Model.Price.ToString("N0")">
                     @Html.ValidationMessage(nameof(Model.Price))
                 </div>
             </div>
@@ -149,34 +149,37 @@
                     <th>Thứ tự hiển thị</th>
                     <th>Ẩn ảnh</th>
                     <th class="text-right">
-                        <a class="btn btn-xs btn-primary" href="~/Product/Photo/123?method=add">
+                        <a class="btn btn-xs btn-primary" href="~/Product/Photo/@Model.ProductID?method=add">
                             <i class="fa fa-plus"></i>
                         </a>
                     </th>
                 </tr>
             </thead>
             <tbody>
-                @for (int i = 1; i <= 3; i++)
-                {
-                    <tr>
-                        <td style="vertical-align:middle">
-                            <img src="~/Images/Products/tiramisu.jpg" alt="MacBookPro" style="width:100px" />
-                        </td>
-                        <td style="vertical-align:middle;">
-                            Bánh Tiramisu
-                        </td>
-                        <td style="vertical-align:middle;">@i</td>
-                        <td style="vertical-align:middle;"></td>
-                        <td style="vertical-align:middle; text-align:right">
-                            <a class="btn btn-xs btn-primary" href="~/Product/Photo/123?method=edit&photoId=456">
-                                <i class="fa fa-edit"></i>
-                            </a>
-                            <a class="btn btn-xs btn-danger" href="~/Product/Photo/123?method=delete&photoId=456" onclick="return confirm('Xóa ảnh của mặt hàng hay không?')">
-                                <i class="fa fa-trash"></i>
-                            </a>
-                        </td>
-                    </tr>
-                }
+                 @{
+                        List<ProductPhoto> listPhotos = SV21T1020285.BusinessLayers.ProductDataService.ListPhotos(Model.ProductID);
+                    }
+                    @foreach (var photo in listPhotos) 
+                    {
+                        <tr>
+                            <td style="vertical-align:middle">
+                                <img src="~/Images/Products/@photo.Photo" alt="" style="width:100px" />
+                            </td>
+                            <td style="vertical-align:middle;">
+                                @photo.Description
+                            </td>
+                            <td style="vertical-align:middle;" name="@nameof(photo.DisplayOrder)">@photo.DisplayOrder</td>
+                            <td style="vertical-align:middle;">@(photo.IsHidden ? "X" : "")</td>
+                            <td style="vertical-align:middle; text-align:right">
+                                <a class="btn btn-xs btn-primary" href="~/Product/Photo/@photo.ProductID?method=edit&photoId=@photo.PhotoID">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a class="btn btn-xs btn-danger" href="~/Product/Photo/@photo.ProductID?method=delete&photoId=@photo.PhotoID" onclick="return confirm('Xóa ảnh của mặt hàng hay không?')">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
             </tbody>
         </table>
     </div>
@@ -201,24 +204,27 @@
                     <th>Giá trị thuộc tính</th>
                     <th>Thứ tự hiển thị</th>
                     <th class="text-right">
-                        <a class="btn btn-xs btn-primary" href="~/Product/Attribute/123?method=add">
+                        <a class="btn btn-xs btn-primary" href="~/Product/Attribute/@Model.ProductID?method=add">
                             <i class="fa fa-plus"></i>
                         </a>
                     </th>
                 </tr>
             </thead>
             <tbody>
-                @for (int i = 1; i <= 5; i++)
-                {
+                    @{
+                        List<ProductAttribute> listAtbs = SV21T1020285.BusinessLayers.ProductDataService.ListAttributes(Model.ProductID);
+                    }
+                    @foreach (var atb in listAtbs) 
+                    {
                     <tr>
-                        <td style="vertical-align:middle">Tiramisu</td>
-                        <td style="vertical-align:middle;">180gr</td>
-                        <td style="vertical-align:middle;">1</td>
+                        <td style="vertical-align:middle">@atb.AttributeName</td>
+                        <td style="vertical-align:middle;">@atb.AttributeValue</td>
+                        <td style="vertical-align:middle;">@atb.DisplayOrder</td>
                         <td style="vertical-align:middle; text-align:right">
-                            <a class="btn btn-xs btn-primary" href="~/Product/Attribute/123?method=edit&attributeId=456">
+                            <a class="btn btn-xs btn-primary" href="~/Product/Attribute/@atb.ProductID?method=edit&attributeId=@atb.AttributeID">
                                 <i class="fa fa-edit"></i>
                             </a>
-                            <a class="btn btn-xs btn-danger" href="~/Product/Attribute/123?method=delete&attributeId=456" onclick="return confirm('Xóa thuộc tính này của mặt hàng?')">
+                            <a class="btn btn-xs btn-danger" href="~/Product/Attribute/@atb.ProductID?method=delete&attributeId=@atb.AttributeID" onclick="return confirm('Xóa thuộc tính này của mặt hàng?')">
                                 <i class="fa fa-trash"></i>
                             </a>
                         </td>

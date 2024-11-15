@@ -45,4 +45,11 @@ namespace SV21T1020285.Web.Models
         public decimal MinPrice { get; set; }
         public decimal MaxPrice { get; set; }
     }
+     public class OrderSearchResult : PaginationSearchResult {
+        public required List<Order> Data {get; set;}
+
+        public int Status { get; set; }
+        public DateTime OrderTime {get; set;}
+        public DateTime AcceptTime {get; set;}
+    }
 }

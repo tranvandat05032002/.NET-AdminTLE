@@ -7,7 +7,6 @@
     <table class="table table-bordered table-hover table-striped mx-auto">
         <thead>
             <tr class="bg-primary">
-                <th class="text-center" style="vertical-align: middle;">Mã nhà cung cấp</th>
                 <th class="text-center" style="vertical-align: middle;">Tên nhà cung cấp</th>
                 <th class="text-center" style="vertical-align: middle;">Tên liên hệ</th>
                 <th class="text-center" style="vertical-align: middle;">Tỉnh thành</th>
@@ -22,7 +21,6 @@
             @foreach (var item in Model.Data)
             {
                 <tr>
-                    <td class="text-center" style="vertical-align: middle;">#@item.SupplierID</td>
                     <td class="text-center" style="vertical-align: middle;">@item.SupplierName</td>
                     <td class="text-center" style="vertical-align: middle;">@item.ContactName</td>
                     <td class="text-center" style="vertical-align: middle;">@item.Province</td>
