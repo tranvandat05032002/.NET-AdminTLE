@@ -1,5 +1,7 @@
+@model OrderDetailModel
 @{
     ViewBag.Title = "Quản lý đơn hàng";
+    var total = 0m;
 }
 
 <div class="box box-primary">
@@ -26,75 +28,75 @@
         <div class="form-group">
             <label class="control-label col-sm-2">Mã đơn hàng:</label>
             <div class="col-sm-4">
-                <p class="form-control">1001</p>
+                <p class="form-control">@Model.Order.OrderID</p>
             </div>
             <label class="control-label col-sm-2">Ngày lập đơn hàng:</label>
             <div class="col-sm-4">
-                <p class="form-control">20/12/2022 15:00</p>
+                <p class="form-control">@string.Format(new System.Globalization.CultureInfo("en-GB"), "{0:dd/MM/yyyy HH:mm}", Model.Order.OrderTime)</p>
             </div>
             <label class="control-label col-sm-2">Nhân viên phụ trách:</label>
             <div class="col-sm-4">
-                <p class="form-control">Trần Nguyên Phong</p>
+                <p class="form-control">@Model.Order.EmployeeName</p>
             </div>
             <label class="control-label col-sm-2">Ngày nhận đơn hàng:</label>
             <div class="col-sm-4">
-                <p class="form-control">20/1/2022 17:00</p>
+                <p class="form-control">@string.Format(new System.Globalization.CultureInfo("en-GB"), "{0:dd/MM/yyyy HH:mm}", Model.Order.AcceptTime)</p>
             </div>
         </div>
 
         <div class="form-group">
             <label class="control-label col-sm-2">Khách hàng:</label>
             <div class="col-sm-4">
-                <p class="form-control">Trần Lê Thanh Hoàng</p>
+                <p class="form-control">@Model.Order.CustomerName</p>
             </div>
             <label class="control-label col-sm-2">Tên giao dịch:</label>
             <div class="col-sm-4">
-                <p class="form-control">Ông Hoàng</p>
+                <p class="form-control">@Model.Order.CustomerContactName</p>
             </div>
             <label class="control-label col-sm-2">Địa chỉ:</label>
             <div class="col-sm-10">
-                <p class="form-control">77 Nguyễn Huệ, thành phố Huế</p>
+                <p class="form-control">@Model.Order.CustomerAddress</p>
             </div>
             <label class="control-label col-sm-2">Email:</label>
             <div class="col-sm-10">
-                <p class="form-control">hoang.lethanh@gmail.com</p>
+                <p class="form-control">@Model.Order.CustomerEmail</p>
             </div>
         </div>
 
         <div class="form-group">
             <label class="control-label col-sm-2">Địa chỉ giao hàng:</label>
             <div class="col-sm-10">
-                <p class="form-control">77 Nguyễn Huệ, thành phố Huế</p>
+                <p class="form-control">@Model.Order.DeliveryAddress</p>
             </div>
             <label class="control-label col-sm-2">Tỉnh/thành:</label>
             <div class="col-sm-10">
-                <p class="form-control">Thừa Thiên Huế</p>
+                <p class="form-control">@Model.Order.DeliveryProvince</p>
             </div>
         </div>
 
         <div class="form-group">
             <label class="control-label col-sm-2">Người giao hàng:</label>
             <div class="col-sm-4">
-                <p class="form-control">Vũ Hoàng Tuấn Minh</p>
+                <p class="form-control">@Model.Order.ShipperName</p>
             </div>
             <label class="control-label col-sm-2">Điện thoại:</label>
             <div class="col-sm-4">
-                <p class="form-control">0985666721</p>
+                <p class="form-control">@Model.Order.ShipperPhone</p>
             </div>
             <label class="control-label col-sm-2">Nhận giao hàng lúc:</label>
             <div class="col-sm-4">
-                <p class="form-control">22/12/2022 11:30</p>
+                <p class="form-control">@string.Format(new System.Globalization.CultureInfo("en-GB"), "{0:dd/MM/yyyy HH:mm}", Model.Order.ShippedTime)</p>
             </div>
         </div>
 
         <div class="form-group">
             <label class="control-label col-sm-2">Trạng thái đơn hàng:</label>
             <div class="col-sm-4">
-                <p class="form-control">Đã hoàn tất</p>
+                <p class="form-control">@Model.Order.StatusDescription</p>
             </div>
             <label class="control-label col-sm-2">Thời điểm hoàn tất:</label>
             <div class="col-sm-4">
-                <p class="form-control">22/12/2022 17:00</p>
+                <p class="form-control">@string.Format(new System.Globalization.CultureInfo("en-GB"), "{0:dd/MM/yyyy HH:mm}", Model.Order.FinishedTime)</p>
             </div>
         </div>
     </div>
@@ -115,20 +117,23 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @for (int i = 1; i <= 5; i++)
+                    @for (int i = 0; i < Model.Details.Count; i++)
                     {
+                        var detail = Model.Details[i];
+                        total += detail.TotalPrice;
+
                         <tr>
-                            <td class="text-center">@i</td>
-                            <td>Samsung Series 9 NP900X4C Premium Ultrabook</td>
-                            <td class="text-center">Cái</td>
-                            <td class="text-center">2</td>
-                            <td class="text-right">18,700,000</td>
-                            <td class="text-right">37,400,000</td>
+                            <td class="text-center">@(i+1)</td>
+                            <td>@detail.ProductName</td>
+                            <td class="text-center">@detail.Unit</td>
+                            <td class="text-center">@detail.Quantity</td>
+                            <td class="text-right number-separator">@detail.SalePrice</td>
+                            <td class="text-right number-separator">@detail.TotalPrice</td>
                             <td class="text-right">
-                                <a href="~/Order/EditDetail/111?productId=222" class="btn btn-xs btn-primary btn-modal">
+                                <a href="~/Order/EditDetail/@Model.Order.OrderID?productId=@detail.ProductID" class="btn btn-xs btn-primary btn-modal">
                                     <i class="fa fa-edit"></i>
                                 </a>
-                                <a href="~/Order/DeleteDetail/111?productId=222" class="btn btn-xs btn-danger" onclick="return confirm('Xóa mặt hàng này khỏi đơn hàng?')">
+                                <a href="~/Order/DeleteDetail/@Model.Order.OrderID?productId=@detail.ProductID" class="btn btn-xs btn-danger" onclick="return confirm('Xóa mặt hàng này khỏi đơn hàng?')">
                                     <i class="fa fa-trash"></i>
                                 </a>
                             </td>
@@ -138,7 +143,7 @@
                 <tfoot>
                     <tr>
                         <th colspan="5" class="text-right">Tổng cộng:</th>
-                        <th class="text-right">187,000,000</th>
+                        <th class="text-right number-separator">@total</th>
                         <th></th>
                     </tr>
                 </tfoot>
