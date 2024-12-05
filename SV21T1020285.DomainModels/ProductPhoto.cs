@@ -8,5 +8,6 @@ namespace SV21T1020285.DomainModels
         public string Description { get; set; } = "";
         public int DisplayOrder { get; set; }
         public bool IsHidden { get; set; }
+
     }
 }

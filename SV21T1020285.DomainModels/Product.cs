@@ -1,3 +1,4 @@
+using SV21T1020285.DomainModels;
 public class Product
 {
     public int ProductID { get; set; }
@@ -9,5 +10,6 @@ public class Product
     public decimal Price { get; set; }
     public string Photo { get; set; } = "";
     public bool IsSelling { get; set; }
+    
 
 }

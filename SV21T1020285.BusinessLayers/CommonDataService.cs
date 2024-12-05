@@ -40,6 +40,10 @@ namespace SV21T1020285.BusinessLayers
             rowCount = customerDB.Count(searchValue);
             return customerDB.List(page, pageSize, searchValue);
         }
+        public static List<Customer> ListOfCustomers()
+        {
+            return customerDB.List();
+        }
         public static Customer? GetCustomer(int id) {
             return customerDB.Get(id);
         }

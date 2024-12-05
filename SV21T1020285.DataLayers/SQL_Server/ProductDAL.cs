@@ -280,12 +280,12 @@ namespace SV21T1020285.DataLayers.SQL_Server
             List<ProductAttribute> data = new List<ProductAttribute>();
             using (var connection = OpenConnection())
             {
-                var sql = "select * from ProductAttributes where ProductID = @ProductID";
+                var sql = "select * from ProductAttributes where ProductID = @ProductID order by DisplayOrder asc";
                 var parameters = new
                 {
                     productID
                 };
-                data = connection.Query<ProductAttribute>(sql: sql, commandType: CommandType.Text).ToList();
+                data = connection.Query<ProductAttribute>(sql: sql, parameters, commandType: CommandType.Text).ToList();
                 connection.Close();
             }
             return data;
@@ -304,7 +304,7 @@ namespace SV21T1020285.DataLayers.SQL_Server
                 {
                     productID
                 };
-                data = connection.Query<ProductPhoto>(sql: sql, commandType: CommandType.Text).ToList();
+                data = connection.Query<ProductPhoto>(sql: sql, parameters, commandType: CommandType.Text).ToList();
                 connection.Close();
             }
             return data;
@@ -355,7 +355,7 @@ namespace SV21T1020285.DataLayers.SQL_Server
                                     set ProductID = @ProductID, 
                                         AttributeName = @AttributeName, 
                                         AttributeValue = @AttributeValue, 
-                                        DisplayOrder = @DisplayOrder)
+                                        DisplayOrder = @DisplayOrder
                                     where AttributeID = @AttributeID
                                 end";
                 var parameters = new
@@ -377,16 +377,15 @@ namespace SV21T1020285.DataLayers.SQL_Server
             bool result = false;
             using (var connection = OpenConnection())
             {
-                var sql = @"if exists (select * from ProductPhotos where PhotoID <> @PhotoID and Photo = @Photo)
-                                begin
+                var sql = @"        
                                     update ProductPhotos
-                                    set ProductID = data.ProductID,
-                                        Photo = data.Photo,
-                                        Description = data.Description ?? "",
-                                        DisplayOrder = data.DisplayOrder,
-                                        IsHidden = data.IsHidden
+                                    set ProductID = @ProductID,
+                                        Photo = @Photo,
+                                        Description = @Description,
+                                        DisplayOrder = @DisplayOrder,
+                                        IsHidden = @IsHidden
                                     where PhotoID = @PhotoID
-                                end";
+                                ";
                 var parameters = new
                 {
                     PhotoID = data.PhotoID,
