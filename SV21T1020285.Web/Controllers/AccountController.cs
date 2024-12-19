@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using SV21T1020285.Web.AppCodes;
+using SV21T1020285.BusinessLayers;
 
 namespace SV21T1020285.Web.Controllers
 {
@@ -23,14 +24,15 @@ namespace SV21T1020285.Web.Controllers
         {
             ViewBag.USername = username;
 
-            if(string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
             {
                 ModelState.AddModelError("Error", "Nhập đầy đủ tên và mật khẩu");
                 return View();
             }
 
             // TODO: Kiểm tra xem username và password (của Employee) có đúng hay không?
-            if(username != "admin")
+            var userAccount = UserAccountService.Authorize(UserTypes.Employee, username, password);
+            if (userAccount == null)
             {
                 ModelState.AddModelError("Error", "Đăng nhập thất bại");
                 return View();
@@ -38,13 +40,13 @@ namespace SV21T1020285.Web.Controllers
 
             WebUserData userData = new WebUserData()
             {
-                UserId = "1",
-                UserName = "",
-                DisplayName = "",
-                Photo = "",
-                Roles = new List<string> {"manager", "sale"}
+                UserId = userAccount.UserId,
+                UserName = userAccount.UserName,
+                DisplayName = userAccount.DisplayName,
+                Photo = userAccount.Photo,
+                Roles = userAccount.RoleNames.Split(',').ToList(),
             };
-            
+
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, userData.CreatePrincipal());
             return RedirectToAction("Index", "Home");
         }
@@ -61,7 +63,8 @@ namespace SV21T1020285.Web.Controllers
             return View();
         }
 
-        public IActionResult AccessDenined() {
+        public IActionResult AccessDenined()
+        {
             return View();
         }
     }

@@ -1,0 +1,163 @@
+@{
+	Layout = null;
+}
+
+<!-- Giao diện trang thông tin cá nhân -->
+<div class="profile-container">
+    <!-- Phần bên trái: Ảnh đại diện -->
+    <div class="profile-sidebar">
+        <div class="avatar-wrapper">
+            <img src="~/images/638648593538287450--4db2a3f7b935f4557f43ffa3fa78fc61.jpeg" alt="Avatar" class="avatar">
+            <h2 class="username">Nguyễn Văn A</h2>
+            <p class="user-email">nguyenvana@example.com</p>
+        </div>
+    </div>
+
+    <!-- Phần bên phải: Thông tin cá nhân -->
+    <div class="profile-content">
+        <h1>Thông Tin Cá Nhân</h1>
+        <form>
+            <div class="profile-info">
+                <label>Họ và Tên:</label>
+                <input type="text" value="Nguyễn Văn A" readonly>
+            </div>
+            <div class="profile-info">
+                <label>Email:</label>
+                <input type="email" value="nguyenvana@example.com" readonly>
+            </div>
+            <div class="profile-info">
+                <label>Số Điện Thoại:</label>
+                <input type="text" value="0123-456-789" readonly>
+            </div>
+            <div class="profile-info">
+                <label>Địa Chỉ:</label>
+                <input type="text" value="123 Đường ABC, Quận 1, TP. HCM" readonly>
+            </div>
+            <div class="profile-info">
+                <label>Ngày Sinh:</label>
+                <input type="text" value="01/01/2000" readonly>
+            </div>
+
+            <!-- Nút cập nhật -->
+            <div class="update-button">
+                <a href="#" class="btn-update">Cập Nhật</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- CSS Tùy Chỉnh -->
+<style>
+    /* Toàn bộ trang */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+    }
+
+    .profile-container {
+        display: flex;
+        max-width: 1000px;
+        margin: 50px auto;
+        background: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    /* Sidebar bên trái */
+    .profile-sidebar {
+        background-color: #4cb7ff;
+        color: #ffffff;
+        text-align: center;
+        width: 35%;
+        padding: 30px 20px;
+    }
+
+    .avatar-wrapper {
+        margin-bottom: 20px;
+    }
+
+    .avatar {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+		border: 4px solid #fff;
+		outline: 3px solid #ddd;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        object-fit: cover;
+    }
+
+    .username {
+        margin-top: 15px;
+        font-size: 1.5rem;
+    }
+
+    .user-email {
+        font-size: 0.9rem;
+        opacity: 0.8;
+    }
+
+    /* Phần thông tin bên phải */
+    .profile-content {
+        width: 65%;
+        padding: 30px;
+    }
+
+    .profile-content h1 {
+        color: #333;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #4cb7ff;
+        padding-bottom: 10px;
+    }
+
+    .profile-info {
+        margin-bottom: 15px;
+    }
+
+    .profile-info label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #555;
+    }
+
+    .profile-info input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f8f9fa;
+        font-size: 1rem;
+        color: #333;
+    }
+
+    .profile-info input:focus {
+        outline: none;
+        border-color: #4cb7ff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+    /* Nút cập nhật */
+    .update-button {
+        text-align: right;
+        margin-top: 20px;
+    }
+
+    .btn-update {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #4cb7ff;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-update:hover {
+        background-color: #0056b3;
+    }
+</style>
