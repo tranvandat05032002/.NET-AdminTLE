@@ -7,14 +7,14 @@
 	<meta charset="utf-8">
 	<meta name="author" content="Kodinger">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>My Login Page</title>
+	<title>Meteor - Đăng nhập</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
 </head>
 
 <body>
 	<main class="my-login-page"> 
-		<sections>
+		<section>
 			<div class="container h-100">
 				<div class="row justify-content-md-center h-100">
 					<div class="card-wrapper">
@@ -26,27 +26,27 @@
 						<div class="card fat">
 							<div class="card-body">
 								<h4 class="card-title">Đăng nhập</h4>
-								<form method="POST" class="my-login-validation" novalidate="">
+								<form action="~/Account/Login"  method="POST" class="my-login-validation">
+									@Html.AntiForgeryToken()
 									<div class="form-group">
-										<input id="email" type="email" class="form-control" name="email" value="" placeholder="Tài khoản" required autofocus>
-										<div class="invalid-feedback">
-											Email is invalid
-										</div>
+										<input id="email" type="email" class="form-control" name="email" value="@ViewBag.Email" placeholder="Examle@gmail.com" autofocus>
+										<span class="glyphicon glyphicon-user form-control-feedback"></span>
 									</div>
 	
 									<div class="form-group">
-										<input id="password" type="password" class="form-control" name="password" required placeholder="Mật khẩu" data-eye>
-									    <div class="invalid-feedback">
-									    	Password is required
-								    	</div>
+										<input id="password" type="password" class="form-control" name="password" placeholder="Mật khẩu" data-eye>
+									   	<span class="glyphicon glyphicon-user form-control-feedback"></span>
+									</div>
+									<div class="" style="margin: -10px 25px 0px 0px; font-size: 12px;">                                
+										@Html.ValidationMessage("Error", new {@style = "color: #f00"})
 									</div>
 									<div class="form-group">
 										<div class="custom-checkbox custom-control">
 											<input type="checkbox" name="remember" id="remember" class="custom-control-input">
-											<label for="remember" class="custom-control-label">Remember Me</label>
+											<label for="remember" class="custom-control-label">Remember me</label>
 										</div>
 									</div>
-	
+									
 									<div class="form-group m-0">
 										<button type="submit" class="btn btn-login btn-block">
 											Login
@@ -58,7 +58,7 @@
 					</div>
 				</div>
 			</div>
-		</sections>
+		</section>
 	</main>
 	@{
 		await Html.RenderPartialAsync("_Footer");

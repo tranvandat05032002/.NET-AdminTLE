@@ -34,11 +34,34 @@
         <div class="col-sm-8 col-lg-4 d-flex justify-content-end gap-5 align-items-center mt-4 mt-sm-0 justify-content-center justify-content-sm-end">
 
         <ul class="d-flex justify-content-end list-unstyled m-0">
-            <li>
-            <a href="#" class="rounded-circle bg-light p-2 mx-1 header-avatar">
-                <img src="~/images/638648593538287450--4db2a3f7b935f4557f43ffa3fa78fc61.jpeg" alt="">
-            </a>
-            </li>
+            @{
+                var userData = User.GetUserData();
+                if(userData != null)
+                {
+                    <li>
+                        <div class="dropdown-center me-1 header-avatar">
+                            <a href="#" class="rounded-circle bg-light dropdown-toggle p-0 mx-1 header-avatar" 
+                            data-bs-toggle="dropdown" aria-expanded="false" data-bs-offset="0,42"> 
+                                <img src="~/images/customer/@(string.IsNullOrWhiteSpace(userData.Photo) ? "default-image.gif" : userData.Photo)" title="@userData.DisplayName" 
+                                    alt="Avatar" class="rounded-circle dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-offset="0,42" style="width: 40px; height: 40px; object-fit: cover;">
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/Account/Info/@userData.UserId">Thông tin cá nhân</a></li>
+                                <li><a class="dropdown-item" href="/Account/ChangePassword">Đổi mật khẩu</a></li>
+                                <li><a class="dropdown-item" href="~/Account/Logout">Đăng xuất</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                }
+                else 
+                {
+                    <li style="color: black;" >
+                            <a href="~/Account/Login" class="bg-light">
+                                Đăng nhập
+                            </a>
+                    </li>
+                }
+            }
             <li class="d-lg-none">
             <a href="#" class="rounded-circle bg-light p-2 mx-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
                 <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#cart"></use></svg>

@@ -1,5 +1,6 @@
+@model Account
 @{
-	Layout = null;
+    Layout = null;
 }
 
 <!-- Giao diện trang thông tin cá nhân -->
@@ -7,9 +8,10 @@
     <!-- Phần bên trái: Ảnh đại diện -->
     <div class="profile-sidebar">
         <div class="avatar-wrapper">
-            <img src="~/images/638648593538287450--4db2a3f7b935f4557f43ffa3fa78fc61.jpeg" alt="Avatar" class="avatar">
-            <h2 class="username">Nguyễn Văn A</h2>
-            <p class="user-email">nguyenvana@example.com</p>
+            <img src="~/images/customer/@(string.IsNullOrWhiteSpace(Model.Photo) ? "default-image.gif" : Model.Photo)"
+                alt="Avatar" class="avatar">
+            <h2 class="username">@Model.AccountName</h2>
+            <p class="user-email">@Model.Email</p>
         </div>
     </div>
 
@@ -19,28 +21,32 @@
         <form>
             <div class="profile-info">
                 <label>Họ và Tên:</label>
-                <input type="text" value="Nguyễn Văn A" readonly>
+                <input type="text" value="@Model.AccountName" readonly>
+            </div>
+            <div class="profile-info">
+                <label>Tên giao dịch:</label>
+                <input type="text" value="@Model.ContactName" readonly>
             </div>
             <div class="profile-info">
                 <label>Email:</label>
-                <input type="email" value="nguyenvana@example.com" readonly>
+                <input type="email" value="@Model.Email" readonly>
             </div>
             <div class="profile-info">
                 <label>Số Điện Thoại:</label>
-                <input type="text" value="0123-456-789" readonly>
+                <input type="text" value="@Model.Phone" readonly>
+            </div>
+            <div class="profile-info">
+                <label>Thành phố:</label>
+                <input type="text" value="@Model.Province" readonly>
             </div>
             <div class="profile-info">
                 <label>Địa Chỉ:</label>
-                <input type="text" value="123 Đường ABC, Quận 1, TP. HCM" readonly>
-            </div>
-            <div class="profile-info">
-                <label>Ngày Sinh:</label>
-                <input type="text" value="01/01/2000" readonly>
+                <input type="text" value="@Model.Address" readonly>
             </div>
 
             <!-- Nút cập nhật -->
             <div class="update-button">
-                <a href="#" class="btn-update">Cập Nhật</a>
+                <a href="~/Account/Edit/@Model.AccountID" class="btn-update">Cập Nhật</a>
             </div>
         </form>
     </div>
@@ -83,9 +89,9 @@
         width: 150px;
         height: 150px;
         border-radius: 50%;
-		border: 4px solid #fff;
-		outline: 3px solid #ddd;
-		box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        border: 4px solid #fff;
+        outline: 3px solid #ddd;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         object-fit: cover;
     }
 

@@ -16,7 +16,7 @@ namespace SV21T1020285.DataLayers.SQL_Server
                 var sql = @"select  CustomerID as UserId, 
                                     Email as UserName, 
                                     CustomerName as DisplayName, 
-                                    N'' as Photo, 
+                                    Photo, 
                                     N'' as RoleNames
                             from Customers
                             where Email = @Email and [Password] = @Password";

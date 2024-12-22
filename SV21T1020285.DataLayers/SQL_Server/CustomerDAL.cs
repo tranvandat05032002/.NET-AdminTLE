@@ -16,7 +16,8 @@ namespace SV21T1020285.DataLayers.SQL_Server
         public int Add(Customer data)
         {
             int id = 0;
-            using(var connection = OpenConnection()) {
+            using (var connection = OpenConnection())
+            {
                 var sql = @"if exists(select * from Customers where Email = @Email)
                                 select -1;
                             else
@@ -26,7 +27,8 @@ namespace SV21T1020285.DataLayers.SQL_Server
                                     values(@CustomerName, @ContactName, @Province, @Address, @Phone, @Email, @IsLocked)
                                     select scope_identity();
                                 end";
-                var parameters = new {
+                var parameters = new
+                {
                     CustomerName = data.CustomerName ?? "",
                     ContactName = data.ContactName ?? "",
                     Province = data.Province ?? "",
@@ -62,9 +64,11 @@ namespace SV21T1020285.DataLayers.SQL_Server
         public bool Delete(int id)
         {
             bool result = false;
-            using(var connection = OpenConnection()) {
+            using (var connection = OpenConnection())
+            {
                 var sql = @"delete from dbo.Customers where CustomerID = @CustomerID";
-                var parameters = new {
+                var parameters = new
+                {
                     CustomerID = id
                 };
                 result = connection.Execute(sql, parameters, commandType: CommandType.Text) > 0;
@@ -78,9 +82,11 @@ namespace SV21T1020285.DataLayers.SQL_Server
         public Customer? Get(int id)
         {
             Customer? data = null;
-            using(var connection = OpenConnection()) {
+            using (var connection = OpenConnection())
+            {
                 var sql = @"select * from Customers where CustomerID = @CustomerID";
-                var parameters = new {
+                var parameters = new
+                {
                     CustomerID = id
                 };
                 data = connection.QueryFirstOrDefault<Customer>(sql: sql, param: parameters, commandType: CommandType.Text);
@@ -94,13 +100,15 @@ namespace SV21T1020285.DataLayers.SQL_Server
         {
             // throw new NotImplementedException();
             bool result = false;
-            using(var connection = OpenConnection()) {
+            using (var connection = OpenConnection())
+            {
                 var sql = @"
                             if exists(select *from Orders where CustomerID = @CustomerID)
                                 select 1
                             else 
                                 select 0";
-                var parameters = new {
+                var parameters = new
+                {
                     CustomerID = id
                 };
                 result = connection.ExecuteScalar<bool>(sql: sql, param: parameters, commandType: CommandType.Text);
@@ -139,7 +147,8 @@ namespace SV21T1020285.DataLayers.SQL_Server
         public bool Update(Customer data)
         {
             bool result = false;
-            using (var connection = OpenConnection()) {
+            using (var connection = OpenConnection())
+            {
                 var sql = @"if not exists(select * from Customers where CustomerId <> @CustomerId and Email = @Email)
                             begin
                                 update Customers
@@ -152,7 +161,8 @@ namespace SV21T1020285.DataLayers.SQL_Server
                                     IsLocked = @IsLocked
                                 where CustomerID = @CustomerID 
                             end";
-                var parameters = new {
+                var parameters = new
+                {
                     CustomerID = data.CustomerID,
                     CustomerName = data.CustomerName ?? "",
                     ContactName = data.ContactName ?? "",
