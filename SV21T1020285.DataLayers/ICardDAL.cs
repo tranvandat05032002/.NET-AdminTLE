@@ -6,12 +6,15 @@ namespace SV21T1020285.DataLayers
     {
         // Cart
         int Add(int CustomerID);
+        int Get(int CustomerID);
         bool InUsed(int CustomerID);
 
         // CartItem
         bool CheckExists(int CartID, int ProductID);
-        bool Update(int CartID, int Quantity);
         int Add(CartItemSQL data);
+        bool Update(int CartID, int ProductID, int Quantity);
+        bool UpdateQuantity(int CartItemID, int Quantity);
+        bool Delete(int CartItemID);
         List<CartItemSQL> List(int CartID);
     }
 }

@@ -68,12 +68,30 @@
                     </a>
                 </li>
                 </ul>
-                <div class="cart text-end d-none d-lg-block dropdown">
-                    <a href="~/Cart" class="border-0 bg-transparent d-flex flex-column gap-2 lh-1">
-                        <i class="fa-solid fa-cart-shopping" style="font-size: 26px;"></i>
-                        <span class="cart-count" id="cart-count" style="position: absolute; top: -2px; right: 0px; background-color: red; color: white; font-size: 12px; width: 10px; height: 10px; border-radius: 50%; display: flex; justify-content: center; align-items: center;"></span>
-                    </a>
-                </div>
+                @{
+                    if (userData != null)
+                    {
+                        var CustomerID = Convert.ToInt32(userData.UserId);
+                        int CartID = SV21T1020285.BusinessLayers.CartDataService.GetCartIDByCustomerID(CustomerID);
+                        if(SV21T1020285.BusinessLayers.CartDataService.ListOfCartItems(CartID).Count > 0)
+                        {
+                            <div class="cart text-end d-none d-lg-block dropdown">
+                                <a href="~/Cart/Index" class="border-0 bg-transparent d-flex flex-column gap-2 lh-1">
+                                    <i class="fa-solid fa-cart-shopping" style="font-size: 26px;"></i>
+                                    <span class="cart-count" id="cart-count" style="position: absolute; top: -2px; right: 0px; background-color: red; color: white; font-size: 12px; width: 10px; height: 10px; border-radius: 50%; display: flex; justify-content: center; align-items: center;"></span>
+                                </a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="cart text-end d-none d-lg-block dropdown">
+                                <a href="~/Cart/Index" class="border-0 bg-transparent d-flex flex-column gap-2 lh-1">
+                                    <i class="fa-solid fa-cart-shopping" style="font-size: 26px;"></i>
+                                </a>
+                            </div>
+                        }
+                    }
+                }
 
             </div>
         </div>

@@ -239,7 +239,6 @@ namespace SV21T1020285.Web.Controllers
                 if (data.AttributeID == 0)
                 {
                     long id = ProductDataService.AddAttribute(data);
-                    Console.WriteLine(data.ProductID);
                     if (id < 0)
                     {
                         ModelState.AddModelError(nameof(data.AttributeName), "Tên thuộc tính đã được sử dụng");

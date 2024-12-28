@@ -89,7 +89,6 @@ namespace SV21T1020285.DataLayers.SQL_Server
                 passwordResult = connection.ExecuteScalar<string>(sql, parameters, commandType: CommandType.Text);
                 connection.Close();
             }
-            Console.WriteLine(password == passwordResult);
             return !string.IsNullOrEmpty(passwordResult) && password == passwordResult;
         }
 

@@ -35,6 +35,26 @@ namespace SV21T1020285.DataLayers.SQL_Server
             }
             return id;
         }
+
+        public int Get(int CustomerID)
+        {
+            int cartID = 0;
+            using (var connection = OpenConnection())
+            {
+                var sql = @" select CartID
+                            from Cart
+                            where CustomerID = @CustomerID
+                            ";
+                var parameters = new
+                {
+                    CustomerID
+                };
+                cartID = connection.ExecuteScalar<int>(sql: sql, param: parameters, commandType: CommandType.Text);
+                connection.Close();
+            }
+            
+            return cartID;
+        }
         
         public bool InUsed(int CustomerID)
         {
@@ -78,15 +98,33 @@ namespace SV21T1020285.DataLayers.SQL_Server
             return result;
         }
 
-        public bool Update(int CartID, int Quantity)
+        public bool Update(int CartID, int ProductID, int Quantity)
         {
             bool result = false;
             using (var connection = OpenConnection())
             {
-                var sql = @"UPDATE CartItem SET Quantity = Quantity + @Quantity, UpdatedAt = GETDATE() WHERE CartID = @CartID AND ProductID = @ProductID";
+                var sql = @"UPDATE CartItem SET Quantity = Quantity + @Quantity, Update_at = GETDATE() WHERE CartID = @CartID AND ProductID = @ProductID";
                 var parameters = new
                 {
                     CartID,
+                    ProductID,
+                    Quantity
+                };
+                result = connection.Execute(sql: sql, param: parameters, commandType: CommandType.Text) > 0;
+                connection.Close();
+            }
+            return result;
+        }
+
+        public bool UpdateQuantity(int CartItemID, int Quantity)
+        {
+            bool result = false;
+            using (var connection = OpenConnection())
+            {
+                var sql = @"UPDATE CartItem SET Quantity = @Quantity, Update_at = GETDATE() WHERE CartItemID = @CartITemID";
+                var parameters = new
+                {
+                    CartItemID,
                     Quantity
                 };
                 result = connection.Execute(sql: sql, param: parameters, commandType: CommandType.Text) > 0;
@@ -118,13 +156,30 @@ namespace SV21T1020285.DataLayers.SQL_Server
             return id;
         }
 
+        public bool Delete(int CartItemID) 
+        {
+            bool result = false;
+            using (var connection = OpenConnection())
+            {
+                var sql = @"delete from CartItem 
+                            where CartItemID = @CartItemID";
+                var parameters = new
+                {
+                    CartItemID
+                };
+                result = connection.Execute(sql, parameters, commandType: CommandType.Text) > 0;
+                connection.Close();
+            }
+            return result;
+        }
+
         public List<CartItemSQL> List(int CartID)
         {  
             List<CartItemSQL> data = new List<CartItemSQL>();
             using (var connection = OpenConnection())
             {
                 var sql = @"SELECT 
-                                ci.CartItemID,
+                                ci.CartItemID as CartItemID,
                                 ci.CartID,
                                 ci.ProductID,
                                 p.ProductName,

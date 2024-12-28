@@ -29,7 +29,6 @@ builder.Services.AddAuthorization(options =>
            var httpContext = context.Resource as HttpContext;
             if (httpContext == null)
             {
-                Console.WriteLine("HttpContext is null");
                 return false;
             }
             // Lấy User ID từ claims

@@ -25,42 +25,56 @@
                 @foreach (var item in Model.Data)
                 {
                   <div class="col">
-                    <div class="product-item">
-                      <div class="header-item">
-                          <span class="badge bg-success position-absolute m-3">-30%</span>
-                          <a href="#" class="btn-wishlist">
-                              <i class="fa-regular fa-heart"></i>
-                          </a>
-                      </div>
-                      <figure>
-                          <div style="height: 180px;">
-                            <img style="height: 100%; object-fit: cover;" src="@WebConfig.ADMIN_URL/images/products/@(string.IsNullOrWhiteSpace(item.Photo) ? "default-image.gif" : item.Photo)"  class="tab-image">
-                          </div>
-                      </figure>
-                      <h3 class="word-break text-wrap">@item.ProductName </h3>
-                      <span class="qty">1 @item.Unit </span>
-                      <span class="rating"><svg width="24" height="24" class="text-primary"><use xlink:href="#star-solid"></use></svg> 4.5</span>
-                     <span class="price" title="@item.Price.ToString("#,0", CultureInfo.GetCultureInfo("vi-VN")) VND" style="font-size: 20px; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                          @item.Price.ToString("#,0", CultureInfo.GetCultureInfo("vi-VN")) VND
-                      </span>
-
-                      <div class="d-flex align-items-center justify-content-between">
-                        <div class="input-group product-qty">
-                            <span class="input-group-btn">
-                                <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
-                                <i class="fa-solid fa-minus" style="width: 16px; height: 16px"></i>
-                                </button>
-                            </span>
-                            <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
-                            <span class="input-group-btn">
-                                <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
-                                    <i class="fa-solid fa-plus" style="width: 16px; height: 16px;"></i>
-                                </button>
-                            </span>
+                    <form action="~/Cart/Index" method="POST" >
+                      <div class="product-item">
+                        <div class="header-item">
+                            <span class="badge bg-success position-absolute m-3">-30%</span>
+                            <a href="#" class="btn-wishlist">
+                                <i class="fa-regular fa-heart"></i>
+                            </a>
                         </div>
-                        <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
+                        <figure>
+                            <div style="height: 180px;">
+                              <img style="height: 100%; object-fit: cover;" src="@WebConfig.ADMIN_URL/images/products/@(string.IsNullOrWhiteSpace(item.Photo) ? "default-image.gif" : item.Photo)"  class="tab-image">
+                            </div>
+                        </figure>
+                        <h3 class="word-break text-wrap">@item.ProductName </h3>
+
+                        <input type="hidden" name="ProductID" value="@item.ProductID" />
+                        <input type="hidden" name="ProductName" value="@item.ProductName" />
+                        <input type="hidden" name="Price" value="@item.Price" />
+                        <input type="hidden" name="Photo" value="@item.Photo" />
+
+
+                         <div class="d-flex justify-content-start align-items-center input-group product-qty w-100" style="gap: 16px 0px;">
+                            <div class="d-flex" style="gap: 0px 2px;">
+                              <span class="input-group-btn">
+                                  <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus" data-product-id="@item.ProductID">
+                                      <i class="fa-solid fa-minus"></i>
+                                  </button>
+                              </span>
+                              <input type="text" id="Quantity-@item.ProductID" name="Quantity" class="form-control input-number text-center p-0" style="width: 60px;" value="1" min="1">
+                              <span class="input-group-btn">
+                                  <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus" data-product-id="@item.ProductID">
+                                      <i class="fa-solid fa-plus"></i>
+                                  </button>
+                              </span>
+                            </div>
+                            <span class="ms-2">@item.Unit</span>
+                        </div>
+
+                       <span class="price" title="@item.Price.ToString("#,0", CultureInfo.GetCultureInfo("vi-VN")) VND" style="font-size: 20px; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                            @item.Price.ToString("#,0", CultureInfo.GetCultureInfo("vi-VN")) VND
+                        </span>
+  
+                        <div class="d-flex flex-column align-items-center justify-content-between w-100" style="margin: 16px 0;">
+                            <button type="submit" class="btn-add-cart d-flex align-items-center justify-content-center gap-2 w-100">
+                                <i class="fa-solid fa-cart-shopping" style="font-size: 14px;"></i>
+                                Thêm vào giỏ
+                            </button>
+                        </div>
                       </div>
-                    </div>
+                    </form>
                   </div>
                 }
               <!-- / product-grid -->
@@ -117,3 +131,27 @@
     </ul>
   </nav>
 </div>
+
+<script>
+    $('.quantity-right-plus').click(function(e){
+        e.preventDefault();
+        var productId = $(this).data('product-id');
+        var quantityInput = $('#Quantity-' + productId);
+        var quantity = parseInt($(quantityInput).val());
+        console.log(productId)
+        if (!isNaN(quantity)) {
+            $(quantityInput).val(quantity + 1);
+        }
+    });
+
+    // Giảm số lượng
+    $('.quantity-left-minus').click(function(e){
+        e.preventDefault();
+        var productId = $(this).data('product-id');
+         var quantityInput = $('#Quantity-' + productId);
+        var quantity = parseInt($(quantityInput).val());
+        if (!isNaN(quantity) && quantity > 1) {
+            $(quantityInput).val(quantity - 1);
+        }
+    });
+</script>

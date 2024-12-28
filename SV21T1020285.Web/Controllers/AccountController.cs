@@ -22,7 +22,6 @@ namespace SV21T1020285.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password)
         {
-            Console.WriteLine($"Username: {username}, Password: {password}");
             ViewBag.USername = username;
 
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
