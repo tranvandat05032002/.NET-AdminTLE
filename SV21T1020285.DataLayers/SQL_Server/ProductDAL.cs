@@ -275,6 +275,34 @@ namespace SV21T1020285.DataLayers.SQL_Server
             return data;
         }
 
+        public List<Product> List(int page = 1, int pageSize = 0, string searchValue = "")
+        {
+            List<Product> data = new List<Product>();
+            searchValue = $"%{searchValue.Trim()}%"; // Đang sử dụng trim loại bỏ khoảng trắng hai đầu
+            using (var connection = OpenConnection())
+            {
+                var sql = @"select *
+                            from (
+                                select *,
+                                    row_number() over(order by ProductName) as RowNumber
+                                from Products
+                                where (@SearchValue = N'' or ProductName like @SearchValue)
+                                 ) as t
+                            where (@PageSize = 0)
+                                or (RowNumber between (@Page - 1)*@PageSize + 1 and @Page * @PageSize)
+                            order by ProductName";
+                var parameters = new
+                {
+                    searchValue,
+                    pageSize,
+                    page
+                };
+                data = connection.Query<Product>(sql: sql, param: parameters, commandType: CommandType.Text).ToList();
+            }
+
+            return data;
+        }
+
         public IList<ProductAttribute> ListAttributes(int productID)
         {
             List<ProductAttribute> data = new List<ProductAttribute>();

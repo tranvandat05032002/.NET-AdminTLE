@@ -17,7 +17,8 @@
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     />
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -68,9 +69,8 @@
     </div>
     <!-- ./wrapper -->
     <!-- jQuery 3 -->
-    <script src="~/themes/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap 3.3.7 -->
-    <script src="~/themes/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- SlimScroll -->
     <script src="~/themes/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
     <!-- FastClick -->
@@ -79,7 +79,6 @@
     <script src="~/themes/bower_components/moment/min/moment.min.js"></script>
     <script src="~/themes/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
     <script src="~/themes/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
-    <script src="~/themes/bower_components//select2/dist/js/select2.min.js"></script>
     <!-- AdminLTE App -->
     <script src="~/themes/dist/js/adminlte.min.js"></script>
     <!-- AdminLTE for demo purposes -->
@@ -111,6 +110,6 @@
         });
     </script>
 
-    @RenderSection("scripts", false)
+    @await RenderSectionAsync("scripts", required: false)
 </body>
 </html>

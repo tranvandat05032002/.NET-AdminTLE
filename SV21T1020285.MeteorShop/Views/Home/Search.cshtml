@@ -1,0 +1,119 @@
+﻿@using System.Globalization
+@model SV21T1020285.MeteorShop.Models.PaginationProductSearchResult
+@{ 
+    Layout = null;
+}
+
+<section>
+  <div class="container-fluid">
+    
+    <div class="row">
+      <div class="col-md-12">
+        <div class="bootstrap-tabs product-tabs">
+          <div class="tabs-header d-flex justify-content-between align-items-center border-bottom my-3">
+            <h3 class="my-3">Danh sách sản phẩm</h3>
+            <nav>
+              <p class="my-3">
+                Có <strong>@Model.RowCount</strong> Mặt hàng trong tổng số <strong>@Model.PageCount</strong> trang. Bạn đang ở trang <strong>@Model.Page</strong>.
+            </p>
+            </nav>
+          </div>
+          <div class="tab-content" id="nav-tabConten                                                            t">
+            <div class="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-all-tab">
+
+              <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
+                @foreach (var item in Model.Data)
+                {
+                  <div class="col">
+                    <div class="product-item">
+                      <div class="header-item">
+                          <span class="badge bg-success position-absolute m-3">-30%</span>
+                          <a href="#" class="btn-wishlist">
+                              <i class="fa-regular fa-heart"></i>
+                          </a>
+                      </div>
+                      <figure>
+                          <div style="height: 180px;">
+                            <img style="height: 100%; object-fit: cover;" src="@WebConfig.ADMIN_URL/images/products/@(string.IsNullOrWhiteSpace(item.Photo) ? "default-image.gif" : item.Photo)"  class="tab-image">
+                          </div>
+                      </figure>
+                      <h3 class="word-break text-wrap">@item.ProductName </h3>
+                      <span class="qty">1 @item.Unit </span>
+                      <span class="rating"><svg width="24" height="24" class="text-primary"><use xlink:href="#star-solid"></use></svg> 4.5</span>
+                     <span class="price" title="@item.Price.ToString("#,0", CultureInfo.GetCultureInfo("vi-VN")) VND" style="font-size: 20px; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                          @item.Price.ToString("#,0", CultureInfo.GetCultureInfo("vi-VN")) VND
+                      </span>
+
+                      <div class="d-flex align-items-center justify-content-between">
+                        <div class="input-group product-qty">
+                            <span class="input-group-btn">
+                                <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
+                                <i class="fa-solid fa-minus" style="width: 16px; height: 16px"></i>
+                                </button>
+                            </span>
+                            <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
+                            <span class="input-group-btn">
+                                <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
+                                    <i class="fa-solid fa-plus" style="width: 16px; height: 16px;"></i>
+                                </button>
+                            </span>
+                        </div>
+                        <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
+                      </div>
+                    </div>
+                  </div>
+                }
+              <!-- / product-grid -->
+              
+            </div>
+            
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="pb-5 d-flex justify-content-center align-items-center">
+  <nav aria-label="Page navigation example">
+    <ul class="pagination" class="debug-css">
+      @if (Model.Page > 10)
+      { 
+           <li class="page-item"><a class="page-link" href="javascript:;" onclick="doSearch(@(Model.Page - 1))" >Previous</a></li>
+          <li class="page-item"><a class="page-link" href="javascript:;" onclick="doSearch(1)">1</a></li>
+          <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+      }
+  
+      @for (int p = Math.Max(1, Model.Page - 4); p <= Math.Min(Model.Page + 9, Model.PageCount); p++)
+      {
+          if (p == Model.Page)
+          {
+              <li class="page-item active"><a class="page-link" href="#">@p</a></li>
+          }
+          else
+          {
+              <li class="page-item"><a class="page-link" href="javascript:;" onclick="doSearch(@p)">@p</a></li>
+          }
+      }
+
+      @if (Model.Page + 5 < Model.PageCount)
+        {
+            <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+            <li class="page-item"><a class="page-link" href="javascript:;" onclick="doSearch(@Model.PageCount)">@Model.PageCount</a></li>
+        }
+        else
+        {
+            <!-- Hiển thị các trang còn lại nếu có ít hơn 10 trang cuối -->
+            @for (int p = Math.Max(Model.Page + 1, Model.PageCount - 9); p <= Model.PageCount; p++)
+            {
+                <li class="page-item"><a class="page-link" href="javascript:;" onclick="doSearch(@p)">@p</a></li>
+            }
+        }
+  
+      @if(Model.Page < Model.PageCount) {
+          <li class="page-item"><a class="page-link" href="javascript:;" onclick="doSearch(@(Model.Page + 1))">Next</a></li>
+      }
+    </ul>
+  </nav>
+</div>

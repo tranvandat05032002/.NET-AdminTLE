@@ -13,10 +13,10 @@ namespace SV21T1020285.BusinessLayers
             productDB = new ProductDAL(Configuration.ConnectionString);
         }
 
-        public static List<Product> ListOfProducts(string searchValue = "")
-        {
-            return productDB.List();
-        }
+        // public static List<Product> ListOfProducts(string searchValue = "")
+        // {
+        //     return productDB.List();
+        // }
 
         public static List<Product> ListOfProducts(out int rowCount, int page = 1, int pageSize = 0,
             string searchValue = "", int categoryID = 0, int supplierID = 0,
@@ -24,6 +24,14 @@ namespace SV21T1020285.BusinessLayers
         {
             rowCount = productDB.Count(searchValue, categoryID, supplierID, minPrice, maxPrice);
             return productDB.List(page, pageSize, searchValue, categoryID, supplierID, minPrice, maxPrice);
+        }
+
+        public static List<Product> ListOfProducts(out int rowCount, int page = 1, int pageSize = 0,
+            string searchValue = "")
+        {
+            // rowCount = productDB.Count(searchValue, categoryID, supplierID, minPrice, maxPrice);
+            rowCount = 20;
+            return productDB.List(page, pageSize, searchValue);
         }
 
         public static Product? GetProduct(int productID)
