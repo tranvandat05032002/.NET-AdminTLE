@@ -1,12 +1,12 @@
 ﻿@using System.Globalization
 @model SV21T1020285.MeteorShop.Models.PaginationProductSearchResult
-@{ 
-    Layout = null;
+@{
+  Layout = null;
 }
 
 <section>
   <div class="container-fluid">
-    
+
     <div class="row">
       <div class="col-md-12">
         <div class="bootstrap-tabs product-tabs">
@@ -14,8 +14,9 @@
             <h3 class="my-3">Danh sách sản phẩm</h3>
             <nav>
               <p class="my-3">
-                Có <strong>@Model.RowCount</strong> Mặt hàng trong tổng số <strong>@Model.PageCount</strong> trang. Bạn đang ở trang <strong>@Model.Page</strong>.
-            </p>
+                Có <strong>@Model.RowCount</strong> Mặt hàng trong tổng số <strong>@Model.PageCount</strong> trang. Bạn
+                đang ở trang <strong>@Model.Page</strong>.
+              </p>
             </nav>
           </div>
           <div class="tab-content" id="nav-tabConten                                                            t">
@@ -25,18 +26,22 @@
                 @foreach (var item in Model.Data)
                 {
                   <div class="col">
-                    <form action="~/Cart/Index" method="POST" >
+                    <form action="~/Cart/Index" method="POST">
                       <div class="product-item">
                         <div class="header-item">
-                            <span class="badge bg-success position-absolute m-3">-30%</span>
-                            <a href="#" class="btn-wishlist">
-                                <i class="fa-regular fa-heart"></i>
-                            </a>
+                          <span class="badge bg-success position-absolute m-3">-30%</span>
+                          <a href="#" class="btn-wishlist">
+                            <i class="fa-regular fa-heart"></i>
+                          </a>
                         </div>
                         <figure>
+                          <a href="~/Product/Info/@item.ProductID">
                             <div style="height: 180px;">
-                              <img style="height: 100%; object-fit: cover;" src="@WebConfig.ADMIN_URL/images/products/@(string.IsNullOrWhiteSpace(item.Photo) ? "default-image.gif" : item.Photo)"  class="tab-image">
+                              <img style="height: 100%; object-fit: cover;"
+                                src="@WebConfig.ADMIN_URL/images/products/@(string.IsNullOrWhiteSpace(item.Photo) ? "default-image.gif" : item.Photo)"
+                                class="tab-image">
                             </div>
+                          </a>
                         </figure>
                         <h3 class="word-break text-wrap">@item.ProductName </h3>
 
@@ -46,112 +51,122 @@
                         <input type="hidden" name="Photo" value="@item.Photo" />
 
 
-                         <div class="d-flex justify-content-start align-items-center input-group product-qty w-100" style="gap: 16px 0px;">
-                            <div class="d-flex" style="gap: 0px 2px;">
-                              <span class="input-group-btn">
-                                  <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus" data-product-id="@item.ProductID">
-                                      <i class="fa-solid fa-minus"></i>
-                                  </button>
-                              </span>
-                              <input type="text" id="Quantity-@item.ProductID" name="Quantity" class="form-control input-number text-center p-0" style="width: 60px;" value="1" min="1">
-                              <span class="input-group-btn">
-                                  <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus" data-product-id="@item.ProductID">
-                                      <i class="fa-solid fa-plus"></i>
-                                  </button>
-                              </span>
-                            </div>
-                            <span class="ms-2">@item.Unit</span>
+                        <div class="d-flex justify-content-start align-items-center input-group product-qty w-100"
+                          style="gap: 16px 0px;">
+                          <div class="d-flex" style="gap: 0px 2px;">
+                            <span class="input-group-btn">
+                              <button type="button" class="quantity-left-minus btn btn-danger btn-number"
+                                data-type="minus" data-product-id="@item.ProductID">
+                                <i class="fa-solid fa-minus"></i>
+                              </button>
+                            </span>
+                            <input type="text" id="Quantity-@item.ProductID" name="Quantity"
+                              class="form-control input-number text-center p-0" style="width: 60px;" value="1" min="1">
+                            <span class="input-group-btn">
+                              <button type="button" class="quantity-right-plus btn btn-success btn-number"
+                                data-type="plus" data-product-id="@item.ProductID">
+                                <i class="fa-solid fa-plus"></i>
+                              </button>
+                            </span>
+                          </div>
+                          <span class="ms-2">@item.Unit</span>
                         </div>
 
-                       <span class="price" title="@item.Price.ToString("#,0", CultureInfo.GetCultureInfo("vi-VN")) VND" style="font-size: 20px; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                            @item.Price.ToString("#,0", CultureInfo.GetCultureInfo("vi-VN")) VND
+                        <span class="price" title="@item.Price.ToString("#,0", CultureInfo.GetCultureInfo("vi-VN")) VND"
+                          style="font-size: 20px; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                          @item.Price.ToString("#,0", CultureInfo.GetCultureInfo("vi-VN")) VND
                         </span>
-  
-                        <div class="d-flex flex-column align-items-center justify-content-between w-100" style="margin: 16px 0;">
-                            <button type="submit" class="btn-add-cart d-flex align-items-center justify-content-center gap-2 w-100">
-                                <i class="fa-solid fa-cart-shopping" style="font-size: 14px;"></i>
-                                Thêm vào giỏ
-                            </button>
+
+                        <div class="d-flex flex-column align-items-center justify-content-between w-100"
+                          style="margin: 16px 0;">
+                          <button type="submit"
+                            class="btn-add-cart d-flex align-items-center justify-content-center gap-2 w-100">
+                            <i class="fa-solid fa-cart-shopping" style="font-size: 14px;"></i>
+                            Thêm vào giỏ
+                          </button>
                         </div>
                       </div>
                     </form>
                   </div>
                 }
-              <!-- / product-grid -->
-              
-            </div>
-            
-          </div>
-        </div>
+                <!-- / product-grid -->
 
+              </div>
+
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
-  </div>
 </section>
 
 <div class="pb-5 d-flex justify-content-center align-items-center">
   <nav aria-label="Page navigation example">
     <ul class="pagination" class="debug-css">
       @if (Model.Page > 10)
-      { 
-           <li class="page-item"><a class="page-link" href="javascript:;" onclick="doSearch(@(Model.Page - 1))" >Previous</a></li>
-          <li class="page-item"><a class="page-link" href="javascript:;" onclick="doSearch(1)">1</a></li>
-          <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
-      }
-  
-      @for (int p = Math.Max(1, Model.Page - 4); p <= Math.Min(Model.Page + 9, Model.PageCount); p++)
       {
-          if (p == Model.Page)
-          {
-              <li class="page-item active"><a class="page-link" href="#">@p</a></li>
-          }
-          else
-          {
-              <li class="page-item"><a class="page-link" href="javascript:;" onclick="doSearch(@p)">@p</a></li>
-          }
+        <li class="page-item"><a class="page-link" href="javascript:;" onclick="doSearch(@(Model.Page - 1))">Previous</a>
+        </li>
+        <li class="page-item"><a class="page-link" href="javascript:;" onclick="doSearch(1)">1</a></li>
+        <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
       }
 
-      @if (Model.Page + 5 < Model.PageCount)
+      @for (int p = Math.Max(1, Model.Page - 4); p <= Math.Min(Model.Page + 9, Model.PageCount); p++)
+      {
+        if (p == Model.Page)
         {
-            <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
-            <li class="page-item"><a class="page-link" href="javascript:;" onclick="doSearch(@Model.PageCount)">@Model.PageCount</a></li>
+          <li class="page-item active"><a class="page-link" href="#">@p</a></li>
         }
         else
         {
-            <!-- Hiển thị các trang còn lại nếu có ít hơn 10 trang cuối -->
-            @for (int p = Math.Max(Model.Page + 1, Model.PageCount - 9); p <= Model.PageCount; p++)
-            {
-                <li class="page-item"><a class="page-link" href="javascript:;" onclick="doSearch(@p)">@p</a></li>
-            }
+          <li class="page-item"><a class="page-link" href="javascript:;" onclick="doSearch(@p)">@p</a></li>
         }
-  
-      @if(Model.Page < Model.PageCount) {
-          <li class="page-item"><a class="page-link" href="javascript:;" onclick="doSearch(@(Model.Page + 1))">Next</a></li>
+      }
+
+      @if (Model.Page + 5 < Model.PageCount)
+      {
+        <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+        <li class="page-item"><a class="page-link" href="javascript:;"
+            onclick="doSearch(@Model.PageCount)">@Model.PageCount</a></li>
+      }
+      else
+      {
+        <!-- Hiển thị các trang còn lại nếu có ít hơn 10 trang cuối -->
+        @for (int p = Math.Max(Model.Page + 1, Model.PageCount - 9); p <= Model.PageCount; p++)
+        {
+          <li class="page-item"><a class="page-link" href="javascript:;" onclick="doSearch(@p)">@p</a></li>
+        }
+      }
+
+      @if (Model.Page < Model.PageCount)
+      {
+        <li class="page-item"><a class="page-link" href="javascript:;" onclick="doSearch(@(Model.Page + 1))">Next</a></li>
       }
     </ul>
   </nav>
 </div>
 
 <script>
-    $('.quantity-right-plus').click(function(e){
-        e.preventDefault();
-        var productId = $(this).data('product-id');
-        var quantityInput = $('#Quantity-' + productId);
-        var quantity = parseInt($(quantityInput).val());
-        console.log(productId)
-        if (!isNaN(quantity)) {
-            $(quantityInput).val(quantity + 1);
-        }
-    });
+  $('.quantity-right-plus').click(function (e) {
+    e.preventDefault();
+    var productId = $(this).data('product-id');
+    var quantityInput = $('#Quantity-' + productId);
+    var quantity = parseInt($(quantityInput).val());
+    console.log(productId)
+    if (!isNaN(quantity)) {
+      $(quantityInput).val(quantity + 1);
+    }
+  });
 
-    // Giảm số lượng
-    $('.quantity-left-minus').click(function(e){
-        e.preventDefault();
-        var productId = $(this).data('product-id');
-         var quantityInput = $('#Quantity-' + productId);
-        var quantity = parseInt($(quantityInput).val());
-        if (!isNaN(quantity) && quantity > 1) {
-            $(quantityInput).val(quantity - 1);
-        }
-    });
+  // Giảm số lượng
+  $('.quantity-left-minus').click(function (e) {
+    e.preventDefault();
+    var productId = $(this).data('product-id');
+    var quantityInput = $('#Quantity-' + productId);
+    var quantity = parseInt($(quantityInput).val());
+    if (!isNaN(quantity) && quantity > 1) {
+      $(quantityInput).val(quantity - 1);
+    }
+  });
 </script>

@@ -429,19 +429,19 @@ h6 {
 }
 
 .btn-back {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #f2f7fa;
-    color: #555;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #f2f7fa;
+  color: #555;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
 }
 
 .btn-back:hover {
-    background-color: rgb(220, 222, 223)
+  background-color: rgb(220, 222, 223);
 }
 /* banner ad */
 .banner-ad {
@@ -555,12 +555,12 @@ h6 {
 }
 .word-break {
   height: 52px;
- 	overflow: hidden;
+  overflow: hidden;
   display: -webkit-box !important;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   color: red;
-   display: block;
+  display: block;
   width: 100%;
   font-weight: 600;
   font-size: 18px;
@@ -661,12 +661,12 @@ input:focus {
   color: white;
 }
 .btn-change-password-back {
-    /* padding: 10px 20px; */
-    background-color: #f2f7fa;
-    color: #555;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+  /* padding: 10px 20px; */
+  background-color: #f2f7fa;
+  color: #555;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
 }
 .btn-change-password-back:hover {
   color: white;
@@ -1036,63 +1036,84 @@ tr.total-data td strong {
 
 /* Tùy chỉnh nút add to cart */
 .btn-add-cart {
-    background-color: #4cb7ff; /* Màu xanh đặc trưng */
-    color: #fff; /* Màu chữ */
-    border: none; /* Bỏ viền */
-    border-radius: 8px; /* Bo góc */
-    padding: 8px 15px; /* Khoảng cách trong */
-    font-size: 16px; /* Cỡ chữ */
-    font-weight: 500; /* Độ dày chữ */
-    transition: all 0.3s ease; /* Hiệu ứng hover */
-    display: inline-flex; /* Căn chỉnh icon và text */
-    align-items: center; /* Giữa dòng */
-    gap: 10px; /* Khoảng cách giữa icon và chữ */
+  background-color: #4cb7ff; /* Màu xanh đặc trưng */
+  color: #fff; /* Màu chữ */
+  border: none; /* Bỏ viền */
+  border-radius: 8px; /* Bo góc */
+  padding: 8px 15px; /* Khoảng cách trong */
+  font-size: 16px; /* Cỡ chữ */
+  font-weight: 500; /* Độ dày chữ */
+  transition: all 0.3s ease; /* Hiệu ứng hover */
+  display: inline-flex; /* Căn chỉnh icon và text */
+  align-items: center; /* Giữa dòng */
+  gap: 10px; /* Khoảng cách giữa icon và chữ */
 }
 
 /* Hiệu ứng hover */
 .btn-add-cart:hover {
-    background-color: #62c0ff; /* Màu xanh đậm hơn khi hover */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Hiệu ứng bóng */
+  background-color: #62c0ff; /* Màu xanh đậm hơn khi hover */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Hiệu ứng bóng */
 }
 
 /* Kiểu chung cho container nút */
 .debug-css {
-    gap: 10px; /* Khoảng cách giữa các nút */
+  gap: 10px; /* Khoảng cách giữa các nút */
 }
 
 /* Nút Xóa */
 .delete-btn {
-    background-color: #f33; /* Màu đỏ */
-    width: 35px; /* Chiều rộng */
-    height: 35px; /* Chiều cao */
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+  background-color: #f33; /* Màu đỏ */
+  width: 35px; /* Chiều rộng */
+  height: 35px; /* Chiều cao */
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .delete-btn:hover {
-    background-color: #d10000; /* Màu đỏ đậm hơn khi hover */
-    transform: scale(1.1); /* Hiệu ứng phóng to nhẹ */
+  background-color: #d10000; /* Màu đỏ đậm hơn khi hover */
+  transform: scale(1.1); /* Hiệu ứng phóng to nhẹ */
 }
 
 /* Nút Đồng ý */
 .agree-btn {
-    background-color: #01b150; /* Màu xanh */
-    width: 35px; /* Chiều rộng */
-    height: 35px; /* Chiều cao */
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+  background-color: #01b150; /* Màu xanh */
+  width: 35px; /* Chiều rộng */
+  height: 35px; /* Chiều cao */
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .agree-btn:hover {
-    background-color: #018a3c; /* Màu xanh đậm hơn khi hover */
-    transform: scale(1.1); /* Hiệu ứng phóng to nhẹ */
+  background-color: #018a3c; /* Màu xanh đậm hơn khi hover */
+  transform: scale(1.1); /* Hiệu ứng phóng to nhẹ */
 }
 
 /* Căn chỉnh icon bên trong nút */
-.delete-btn i, .agree-btn i {
-    font-size: 16px; /* Kích thước icon */
-    margin: 0;
-    padding: 0;
+.delete-btn i,
+.agree-btn i {
+  font-size: 16px; /* Kích thước icon */
+  margin: 0;
+  padding: 0;
+}
+
+.active-thumbnail-style {
+  /* border: 3px solid blue; Viền màu xanh dương */
+  border-radius: 5px;
+  border: 2.5px solid transparent;
+  border-image: linear-gradient(to right, #00bfff, #ff69b4);
+  border-image-slice: 1;
+}
+.thumbnail-img {
+  width: 60px !important;
+  height: 70px !important;
+  object-fit: cover;
+}
+#thumbnailContainer {
+  max-width: 600px; /* Độ rộng giới hạn để hiển thị tối đa 5 ảnh */
+  overflow: hidden;
+}
+#thumbnailContainer::-webkit-scrollbar {
+  display: none; /* Ẩn thanh cuộn trên Chrome, Safari */
 }
