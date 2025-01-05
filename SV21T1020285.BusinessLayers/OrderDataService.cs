@@ -43,24 +43,24 @@ namespace SV21T1020285.BusinessLayers
         IEnumerable<OrderDetail> details)
 
         {
-        if (details.Count() == 0)
-        return 0;
-        Order data = new Order()
-        {
-        EmployeeID = employeeID,
-        CustomerID = customerID,
-        DeliveryProvince = deliveryProvince,
-        DeliveryAddress = deliveryAddress
-        };
-        int orderID = orderDB.Add(data);
-        if (orderID > 0)
-        {
-        foreach (var item in details)
-        {
-        orderDB.SaveDetail(orderID, item.ProductID, item.Quantity, item.SalePrice);
-        }
-        return orderID;
-        }
+            if (details.Count() == 0)
+            return 0;
+            Order data = new Order()
+            {
+                EmployeeID = employeeID,
+                CustomerID = customerID,
+                DeliveryProvince = deliveryProvince,
+                DeliveryAddress = deliveryAddress
+            };
+            int orderID = orderDB.Add(data);
+            if (orderID > 0)
+            {
+                foreach (var item in details)
+                {
+                orderDB.SaveDetail(orderID, item.ProductID, item.Quantity, item.SalePrice);
+                }
+                return orderID;
+            }
         return 0;
         }
         /// <summary>

@@ -7,6 +7,7 @@ namespace SV21T1020285.DataLayers
         // Cart
         int Add(int CustomerID);
         int Get(int CustomerID);
+        bool DeleteCart(int CartID);
         bool InUsed(int CustomerID);
 
         // CartItem

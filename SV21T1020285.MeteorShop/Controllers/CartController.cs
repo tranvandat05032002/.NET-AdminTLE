@@ -14,6 +14,7 @@ public class CartController : Controller
     {
         var userId = HttpContext.User.FindFirst("UserId")?.Value;
 
+
         if(userId != null) {
 
             int CustomerID = Convert.ToInt32(userId);
@@ -42,6 +43,16 @@ public class CartController : Controller
         if(userId != null) {
             int CustomerID = Convert.ToInt32(userId);
             int CartID = CartDataService.GetCartIDByCustomerID(CustomerID);
+            if (!CartDataService.CheckExistsCart(CustomerID))
+            {
+                // Nếu không có, thêm giỏ hàng mới
+                CartID = CartDataService.AddCart(CustomerID);
+            }
+            else
+            {
+                CartID = CartDataService.GetCartIDByCustomerID(CustomerID);
+            }
+
             if(!CartDataService.CheckExistsCartItem(CartID, Convert.ToInt32(ProductID)))
             {
                 CartItemSQL cartItem = new CartItemSQL
@@ -81,5 +92,54 @@ public class CartController : Controller
         bool result = CartDataService.UpdateQuantityCartItem(CartItemID, Quantity);
         return RedirectToAction("Index");
     }
+    
+    // Đặt hàng từ khách hàng
+    public IActionResult Init () 
+    {
+         var userId = HttpContext.User.FindFirst("UserId")?.Value;
+         int customerID = Convert.ToInt32(userId);
+         Customer user = CommonDataService.GetCustomer(customerID);
 
+         if(customerID != null) {
+             var data = UserAccountService.GetAccount(customerID);
+            // Lấy thông tin khách hàng
+            int cartID = 0;
+
+            if (CartDataService.CheckExistsCart(customerID))
+            { 
+                // Lấy CartID thông qua CustomerID
+                cartID = CartDataService.GetCartIDByCustomerID(customerID);
+
+                // Lấy thông tin giỏ hàng (các sản phẩm có trong giỏ hàng đó)
+                var cartItems = CartDataService.ListOfCartItems(cartID);
+                int employeeID = 1;
+
+                //  Thêm vào OrderDetails và Order
+                List<OrderDetail> orderDetails = new List<OrderDetail>();
+                foreach (var cartItem in cartItems) {
+                    orderDetails.Add(
+                        new OrderDetail()
+                        {
+                            ProductID = cartItem.ProductID,
+                            Quantity = cartItem.Quantity,
+                            SalePrice = cartItem.Price
+                        }
+                    );
+                }
+                int orderID = OrderDataService.InitOrder(employeeID, customerID, data.Province, data.Address, orderDetails);
+                
+                // Xóa tất cả mặt hàng trong giỏ hàng.
+                bool result = CartDataService.DeleteCart(cartID);
+                if(!result) 
+                {
+                    Console.WriteLine("Lỗi trong quá trình xóa giỏ hàng");
+                }
+                
+                // return Json(orderID);
+                return RedirectToAction("ProcessOrder", "Order");
+
+            }
+        }
+        return RedirectToAction("Login", "Account");
+    }
 }

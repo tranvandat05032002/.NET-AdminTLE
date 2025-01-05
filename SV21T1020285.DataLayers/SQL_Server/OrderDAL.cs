@@ -231,19 +231,27 @@ namespace SV21T1020285.DataLayers.SQL_Server {
             bool result = false;//TODO: Hoàn chỉnh phần code còn thiếu
             using (var connection = OpenConnection())
             {
-            var sql = @"if exists(select * from OrderDetails
+                var sql = @"if exists(select * from OrderDetails
 
-                    where OrderID = @OrderID and ProductID = @ProductID)
+                        where OrderID = @OrderID and ProductID = @ProductID)
 
-                    update OrderDetails
-                    set Quantity = @Quantity,
-                    SalePrice = @SalePrice
-                    where OrderID = @OrderID and ProductID = @ProductID
+                        update OrderDetails
+                        set Quantity = @Quantity,
+                        SalePrice = @SalePrice
+                        where OrderID = @OrderID and ProductID = @ProductID
 
-                    else
-                    insert into OrderDetails(OrderID, ProductID, Quantity, SalePrice)
-                    values(@OrderID, @ProductID, @Quantity, @SalePrice)";
-            //TODO: Hoàn chỉnh phần code còn thiếu
+                        else
+                        insert into OrderDetails(OrderID, ProductID, Quantity, SalePrice)
+                        values(@OrderID, @ProductID, @Quantity, @SalePrice)";
+                var parameters = new
+                {
+                    orderID,
+                    productID,
+                    quantity,
+                    salePrice
+                };
+                result = connection.ExecuteScalar<int>(sql: sql, param: parameters, commandType: CommandType.Text) > 0;
+                connection.Close();
             }
             return result;
             }

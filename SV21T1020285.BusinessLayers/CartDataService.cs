@@ -23,6 +23,10 @@ namespace SV21T1020285.BusinessLayers
         {
             return cartDB.Get(CustomerID);
         }
+        public static bool DeleteCart (int CartID)
+        {
+            return cartDB.DeleteCart(CartID);
+        }
 
         public static bool CheckExistsCart(int CustomerID)
         {

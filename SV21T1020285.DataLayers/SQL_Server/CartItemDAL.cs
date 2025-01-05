@@ -55,6 +55,23 @@ namespace SV21T1020285.DataLayers.SQL_Server
             
             return cartID;
         }
+
+        public bool DeleteCart(int CartID) 
+        {
+            bool result = false;
+            using (var connection = OpenConnection())
+            {
+                var sql = @"delete from Cart 
+                            where CartID = @CartID";
+                var parameters = new
+                {
+                    CartID
+                };
+                result = connection.Execute(sql, parameters, commandType: CommandType.Text) > 0;
+                connection.Close();
+            }
+            return result;
+        }
         
         public bool InUsed(int CustomerID)
         {
