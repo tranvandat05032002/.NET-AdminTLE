@@ -7,5 +7,7 @@ namespace SV21T1020285.DataLayers
         UserAccount? Authorize(string username, string password);
 
         bool ChangePassword(string username, string password);
+
+        int Register(string fullName, string email, string password);
     }
 }

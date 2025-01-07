@@ -1,0 +1,151 @@
+@using System
+@using System.Globalization
+@model SV21T1020285.MeteorShop.Models.OrderSearchResult
+@{
+    decimal totalPrice = 0m;
+    Layout = null;
+}
+<div class="cart-section mt-150 mb-150" style="min-height: 100vh;">
+    <div class="container">
+        <div class="row d-flex flex-column">
+            <div class="col-md-12">
+                <div class="cart-table-wrap">
+                    @if (Model.Data != null && Model.Data.Count > 0)
+                    {
+
+                        <table class="cart-table">
+                            <thead class="cart-table-head">
+                                <tr class="table-head-row">
+                                    <th class="order-id">Mã đơn hàng</th>
+                                    <th class="order-address">Địa chỉ nhận hàng</th>
+                                    <th class="order-email">Email</th>
+                                    <th class="order-created-at">Thời gian đặt hàng</th>
+                                    <th class="order-status">Trạng thái đơn hàng</th>
+                                    <th class="order-action">Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Data)
+                                {
+                                    string description = item.StatusDescription;
+                                    if (item.Status == 1 || item.Status == 2)
+                                    {
+                                        string[] statusDescription = item.StatusDescription.Split('.');
+                                        description = statusDescription[1];
+                                    }
+                                    // Chuyển chuỗi OrderTime về DateTime
+                                    DateTime orderTime = DateTime.ParseExact(item.OrderTime.ToString("dd/MM/yyyy hh:mm:ss tt"),
+                                    "dd/MM/yyyy hh:mm:ss tt", null);
+
+                                    // Lấy múi giờ Việt Nam (UTC+7)
+                                    TimeZoneInfo vietnamTimeZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
+
+                                    // Chuyển đổi thời gian từ Local hoặc UTC sang giờ Việt Nam
+                                    DateTime vietnamDate = TimeZoneInfo.ConvertTimeFromUtc(orderTime, vietnamTimeZone);
+
+                                    // Định dạng thời gian theo kiểu 24 giờ
+                                    string vietnamDateString = vietnamDate.ToString("dd/MM/yyyy HH:mm:ss");
+
+
+                                    <tr class="table-body-row">
+                                        <td class="order-id">
+                                            #@item.OrderID
+                                        </td>
+                                        <td class="order-address">
+                                            <p>@item.DeliveryAddress</p>
+                                        </td>
+                                        <td class="order-email">
+                                            <p>@item.CustomerEmail</p>
+                                        </td>
+                                        <td class="order-created-at">
+                                            @vietnamDateString
+                                        </td>
+                                        @if (@item.Status == 1)
+                                        {
+                                            <td class="order-status d-flex justify-content-center">
+                                                <div>
+                                                    <p class="status-label loading">@description</p>
+                                                </div>
+                                            </td>
+                                        }
+                                        @if (@item.Status == 2)
+                                        {
+                                            <td class="order-status d-flex justify-content-center">
+                                                <div>
+                                                    <p class="status-label accept">@description</p>
+                                                </div>
+                                            </td>
+                                        }
+                                        @if (@item.Status == 3)
+                                        {
+                                            <td class="order-status d-flex justify-content-center">
+                                                <div>
+                                                    <p class="status-label process">@description</p>
+                                                </div>
+                                            </td>
+                                        }
+                                        @if (@item.Status == 4)
+                                        {
+                                            <td class="order-status d-flex justify-content-center">
+                                                <div>
+                                                    <p class="status-label done">@description</p>
+                                                </div>
+                                            </td>
+                                        }
+                                        @if (@item.Status == -1)
+                                        {
+                                            <td class="order-status d-flex justify-content-center">
+                                                <div>
+                                                    <p class="status-label cancel">@description</p>
+                                                </div>
+                                            </td>
+                                        }
+                                        @if (@item.Status == -2)
+                                        {
+                                            <td class="order-status d-flex justify-content-center">
+                                                <div>
+                                                    <p class="status-label reject">@description</p>
+                                                </div>
+                                            </td>
+                                        }
+
+                                        <td class="order-action">
+                                            <a href="/Order/ProcessOrder/@item.OrderID" class="btn btn-secondary">Xem chi
+                                                tiết</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <p style="font-size: 24; text-align: center;">Không có đơn hàng nào.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showAgreeButton(cartItemID) {
+        document.getElementById(`agree-button-${cartItemID}`).classList.remove('d-none');
+    }
+
+    function toggleProductList(cartItemID) {
+        var productList = document.getElementById(`product-list-${cartItemID}`);
+        var icon = document.getElementById(`icon-${cartItemID}`);
+
+        // Toggle visibility of product list
+        if (productList.classList.contains('d-none')) {
+            productList.classList.remove('d-none');
+            icon.classList.remove('fa-chevron-down');
+            icon.classList.add('fa-chevron-up');
+        } else {
+            productList.classList.add('d-none');
+            icon.classList.remove('fa-chevron-up');
+            icon.classList.add('fa-chevron-down');
+        }
+    }
+</script>

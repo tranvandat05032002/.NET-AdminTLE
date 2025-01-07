@@ -11,6 +11,11 @@ namespace SV21T1020285.DataLayers
 
         string searchValue = "");
 
+        IList<Order> List(int CustomerID, int page = 1, int pageSize = 0,
+        int status = 0, DateTime? fromTime = null, DateTime? toTime = null,
+
+        string searchValue = "");
+
         /// <summary>
         /// Đếm số lượng đơn hàng thỏa điều kiện tìm kiếm
         /// </summary>

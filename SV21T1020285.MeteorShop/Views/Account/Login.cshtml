@@ -1,56 +1,86 @@
 @{
-    Layout = null;
+	Layout = null;
 }
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="utf-8">
 	<meta name="author" content="Kodinger">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 	<title>Meteor - Đăng nhập</title>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+	<style>
+		.divider {
+			display: flex;
+			align-items: center;
+			text-align: center;
+			margin: 8px 0;
+		}
+
+		.divider::before,
+		.divider::after {
+			content: '';
+			flex: 1;
+			border-bottom: 1px solid #dee2e6;
+			margin: 0 10px;
+		}
+	</style>
 </head>
 
 <body>
-	<main class="my-login-page"> 
+	<main class="my-login-page">
 		<section>
 			<div class="container h-100">
 				<div class="row justify-content-md-center h-100">
 					<div class="card-wrapper">
 						<div class="main-logo">
 							<a href="index.html">
-								<h3 class="header-title text-center">MeteorShop</h3>  
+								<h3 class="header-title text-center">MeteorShop</h3>
 							</a>
 						</div>
 						<div class="card fat">
 							<div class="card-body">
 								<h4 class="card-title">Đăng nhập</h4>
-								<form action="~/Account/Login"  method="POST" class="my-login-validation">
+								<form action="~/Account/Login" method="POST" class="my-login-validation">
 									@Html.AntiForgeryToken()
 									<div class="form-group">
-										<input id="email" type="email" class="form-control" name="email" value="@ViewBag.Email" placeholder="Examle@gmail.com" autofocus>
+										<input id="email" type="email" class="form-control" name="email"
+											value="@ViewBag.Email" placeholder="Examle@gmail.com" autofocus>
 										<span class="glyphicon glyphicon-user form-control-feedback"></span>
 									</div>
-	
+
 									<div class="form-group">
-										<input id="password" type="password" class="form-control" name="password" placeholder="Mật khẩu" data-eye>
-									   	<span class="glyphicon glyphicon-user form-control-feedback"></span>
+										<input id="password" type="password" class="form-control" name="password"
+											placeholder="Mật khẩu" data-eye>
+										<span class="glyphicon glyphicon-user form-control-feedback"></span>
 									</div>
-									<div class="" style="margin: -10px 25px 0px 0px; font-size: 12px;">                                
-										@Html.ValidationMessage("Error", new {@style = "color: #f00"})
+									<div class="" style="margin: -10px 25px 0px 0px; font-size: 12px;">
+										@Html.ValidationMessage("Error", new { @style = "color: #f00" })
 									</div>
 									<div class="form-group">
 										<div class="custom-checkbox custom-control">
-											<input type="checkbox" name="remember" id="remember" class="custom-control-input">
-											<label for="remember" class="custom-control-label">Remember me</label>
+											<input type="checkbox" name="remember" id="remember"
+												class="custom-control-input">
+											<label for="remember" class="custom-control-label">Lưu mật khẩu</label>
 										</div>
 									</div>
-									
-									<div class="form-group m-0">
-										<button type="submit" class="btn btn-login btn-block">
-											Login
-										</button>
+
+									<div class="d-flex flex-column">
+										<div class="form-group m-0 flex-1">
+											<button type="submit" class="btn btn-login btn-block">
+												Login
+											</button>
+										</div>
+										<span class="text-center divider">Hoặc</span>
+										<div class="form-group m-0 flex-1"
+											style="border: 1px solid #dee2e6; border-radius: 5px;">
+											<a href="~/Account/Register" class="btn btn-light btn-block">
+												Đăng ký
+											</a>
+										</div>
 									</div>
 								</form>
 							</div>
@@ -64,4 +94,5 @@
 		await Html.RenderPartialAsync("_Footer");
 	}
 </body>
+
 </html>

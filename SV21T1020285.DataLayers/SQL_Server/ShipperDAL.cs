@@ -16,7 +16,8 @@ namespace SV21T1020285.DataLayers.SQL_Server
         public int Add(Shipper data)
         {
             int id = 0;
-            using(var connection = OpenConnection()) {
+            using (var connection = OpenConnection())
+            {
                 var sql = @"if exists(select * from Shippers where Phone = @Phone)
                                 select -1;
                             else
@@ -26,7 +27,8 @@ namespace SV21T1020285.DataLayers.SQL_Server
                                     select scope_identity();
                                 end
                             ";
-                var parameters = new {
+                var parameters = new
+                {
                     ShipperName = data.ShipperName ?? "",
                     Phone = data.Phone ?? "",
                 };
@@ -57,9 +59,11 @@ namespace SV21T1020285.DataLayers.SQL_Server
         public bool Delete(int id)
         {
             bool result = false;
-            using(var connection = OpenConnection()) {
+            using (var connection = OpenConnection())
+            {
                 var sql = @"delete from dbo.Shippers where ShipperID = @ShipperID";
-                var parameters = new {
+                var parameters = new
+                {
                     ShipperID = id
                 };
                 result = connection.Execute(sql, parameters, commandType: CommandType.Text) > 0;
@@ -72,9 +76,11 @@ namespace SV21T1020285.DataLayers.SQL_Server
         public Shipper? Get(int id)
         {
             Shipper? data = null;
-            using(var connection = OpenConnection()) {
+            using (var connection = OpenConnection())
+            {
                 var sql = @"select * from Shippers where ShipperID = @ShipperID";
-                var parameters = new {
+                var parameters = new
+                {
                     ShipperID = id
                 };
                 data = connection.QueryFirstOrDefault<Shipper>(sql: sql, param: parameters, commandType: CommandType.Text);
@@ -86,13 +92,15 @@ namespace SV21T1020285.DataLayers.SQL_Server
         public bool InUse(int id)
         {
             bool result = false;
-            using(var connection = OpenConnection()) {
+            using (var connection = OpenConnection())
+            {
                 var sql = @"
                             if exists(select *from Orders where ShipperID = @ShipperID)
                                 select 1
                             else 
                                 select 0";
-                var parameters = new {
+                var parameters = new
+                {
                     ShipperID = id
                 };
                 result = connection.ExecuteScalar<bool>(sql: sql, param: parameters, commandType: CommandType.Text);
@@ -128,10 +136,23 @@ namespace SV21T1020285.DataLayers.SQL_Server
             return data;
         }
 
+        public List<Shipper> List()
+        {
+            List<Shipper> data = new List<Shipper>();
+            using (var connection = OpenConnection())
+            {
+                var sql = @"select * 
+                            from Shippers";
+                data = connection.Query<Shipper>(sql: sql, commandType: System.Data.CommandType.Text).ToList();
+            }
+            return data;
+        }
+
         public bool Update(Shipper data)
         {
-             bool result = false;
-            using (var connection = OpenConnection()) {
+            bool result = false;
+            using (var connection = OpenConnection())
+            {
                 var sql = @"if not exists(select * from Shippers where ShipperId <> @ShipperId and Phone = @Phone)
                             begin 
                                 update Shippers
@@ -140,7 +161,8 @@ namespace SV21T1020285.DataLayers.SQL_Server
                                 where ShipperID = @ShipperID 
                             end
                         ";
-                var parameters = new {
+                var parameters = new
+                {
                     ShipperID = data.ShipperID,
                     ShipperName = data.ShipperName ?? "",
                     Phone = data.Phone ?? "",

@@ -1,44 +1,157 @@
+@model OrderDetailModel
 @{
+    string description = Model.Order.StatusDescription;
+    if (Model.Order.Status == 1 || Model.Order.Status == 2)
+    {
+        string[] statusDescription = Model.Order.StatusDescription.Split('.');
+        description = statusDescription[1];
+    }
+
+    DateTime orderTime = DateTime.ParseExact(Model.Order.OrderTime.ToString("dd/MM/yyyy hh:mm:ss tt"),
+    "dd/MM/yyyy hh:mm:ss tt", null);
+
+    // Lấy múi giờ Việt Nam (UTC+7)
+    TimeZoneInfo vietnamTimeZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
+
+    // Chuyển đổi thời gian từ Local hoặc UTC sang giờ Việt Nam
+    DateTime vietnamDate = TimeZoneInfo.ConvertTimeFromUtc(orderTime, vietnamTimeZone);
+
+    // Định dạng thời gian theo kiểu 24 giờ
+    string vietnamDateString = vietnamDate.ToString("dd/MM/yyyy HH:mm:ss");
     ViewData["Title"] = "";
 }
 
 <!-- Giao diện Theo Dõi Đơn Hàng -->
 <div class="order-tracking-container">
-    <h1 class="tracking-title">Theo Dõi Đơn Hàng</h1>
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="update-button">
+            <a href="~/Order/Index" class="btn btn-light">
+                <i class="fa-solid fa-arrow-left" style="margin-right: 5px;"></i>
+                Quay lại
+            </a>
+        </div>
+        @* <h1 class="tracking-title p-0 m-0">Theo Dõi Đơn Hàng</h1> *@
+        @if (@Model.Order.Status == 1)
+        {
+            <div>
+                <p class="status-label loading">@description</p>
+            </div>
+        }
+        @if (@Model.Order.Status == 2)
+        {
+            <div>
+                <p class="status-label accept">@description</p>
+            </div>
+        }
+        @if (@Model.Order.Status == 3)
+        {
+            <div>
+                <p class="status-label process">@description</p>
+            </div>
+        }
+        @if (@Model.Order.Status == 4)
+        {
+            <div>
+                <p class="status-label done">@description</p>
+            </div>
+        }
+        @if (@Model.Order.Status == -1)
+        {
+            <div>
+                <p class="status-label cancel">@description</p>
+            </div>
+        }
+        @if (@Model.Order.Status == -2)
+        {
+            <div>
+                <p class="status-label reject">@description</p>
+            </div>
+        }
+    </div>
 
     <!-- Thông Tin Đơn Hàng -->-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                              <div class="order-info">
-        <p><strong>Mã Đơn Hàng:</strong> #123456789</p>
-        <p><strong>Người Nhận:</strong> Nguyễn Văn A</p>
-        <p><strong>Địa Chỉ:</strong> 123 Đường ABC, Quận 1, TP.HCM</p>
-        <p><strong>Ngày Đặt Hàng:</strong> 01/06/2024</p>
+    <div class="order-info">
+        <p><strong>Mã Đơn Hàng: </strong>@Model.Order.OrderID</p>
+        <p><strong>Người Nhận: </strong> @Model.Order.CustomerName</p>
+        <p><strong>Thành Phố: </strong> @Model.Order.DeliveryProvince</p>
+        <p><strong>Địa Chỉ: </strong>@Model.Order.DeliveryAddress</p>
+        <p><strong>Ngày Đặt Hàng: </strong>@vietnamDateString</p>
     </div>
 
     <!-- Tiến Trình Đơn Hàng -->
-    <div class="tracking-steps">
-        <div class="step completed">
-            <div class="circle"></div>
-            <p>Xác Nhận Đơn Hàng</p>
-        </div>
-        <div class="step completed">
-            <div class="circle"></div>
-            <p>Đang Đóng Gói</p>
-        </div>
-        <div class="step active">
-            <div class="circle"></div>
-            <p>Đang Vận Chuyển</p>
-        </div>
-        <div class="step">
-            <div class="circle"></div>
-            <p>Đã Giao Hàng</p>
-        </div>
-    </div>
+    @if (@Model.Order.Status > 0)
+    {
+        <div class="d-flex flex-column">
+            <div style="width: 97%;">
+                <div class="tracking-steps d-flex justify-content-between align-items-center" style="width: 95%; margin-left: 40px;">
+                    <div class="step loading">
+                        <div class="circle" title="Đang chờ duyệt" style="padding: 27px; border: 3px solid #ddd; border-radius: 100%; color: #ddd;">
+                            <i class="fa-solid fa-receipt" style="font-size: 30px; font-weight: bold;"></i>
+                        </div>
+                    </div>
+                    <div class="step accept">
+                        <div class="circle" title="Đang lấy hàng" style="padding: 27px; border: 3px solid #ddd; border-radius: 100%; color: #ddd;">
+                            <i class="fa-solid fa-money-bill" style="font-size: 30px; font-weight: bold;"></i>
+                        </div>
+                    </div>
+                    <div class="step process">
+                        <div class="circle" title="Đang được giao" style="padding: 27px; border: 3px solid #ddd; border-radius: 100%; color: #ddd;">
+                            <i class="fa-solid fa-truck" style="font-size: 30px; font-weight: bold;"></i>
+                        </div>
+                    </div>
+                    <div class="step done">
+                        <div class="circle" title="Đã hoàn tất" style="padding: 27px; border: 3px solid #ddd; border-radius: 100%; color: #ddd;">
+                            <i class="fa-solid fa-check" style="font-size: 30px; font-weight: bold;"></i>
+                        </div>
+                    </div>
 
-    <!-- Thêm nút hoặc đường dẫn -->
-    <div class="order-actions">
-        <a href="#" class="btn-back">Quay Lại Trang Chủ</a>
-        <a href="#" class="btn-support">Liên Hệ Hỗ Trợ</a>
-    </div>
+                    <div class="bar-background"></div>
+
+                    <div class="bar">
+                        <span class="indicator"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="step d-flex justify-content-between align-items-center">
+                <div class="loading">
+                    <p>Đang chờ duyệt</p>
+                </div>
+                <div class="accept">
+                    <p>Đang lấy hàng</p>
+                </div>
+                <div class="process">
+                    <p>Đang được giao</p>
+                </div>
+                <div class="done">
+                    <p>Đã hoàn tất</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="order-actions">
+            @if (@Model.Order.Status == 4 ^ @Model.Order.Status == 3)
+            {
+                <button class="btn btn-secondary opacity-25" disabled>
+                    Hủy Đơn Hàng
+                </button>
+            }
+            else
+            {
+                <a href="~/Order/Cancel/@Model.Order.OrderID" class="btn btn-secondary">Hủy Đơn Hàng</a>
+            }
+            <a href="#" class="btn btn-primary">Liên Hệ Hỗ Trợ</a>
+        </div>
+    }
+    else
+    {
+        <div class=" d-flex justify-content-center align-items-center">
+            <div style="width: 80px; height: 80px; border: 5px solid red; border-radius: 100%; background-color: rgba(255, 96, 96, 0.2);"
+                class="d-flex justify-content-center align-items-center">
+                <i class="fa-solid fa-x" style="font-size: 32px; color: red;"></i>
+            </div>
+        </div>
+    }
+
 </div>
 
 <!-- CSS Tùy Chỉnh -->
@@ -79,34 +192,42 @@
 
     /* Tiến trình theo dõi */
     .tracking-steps {
+        position: relative;
         display: flex;
         justify-content: space-between;
-        margin: 20px 0;
+        @* margin: 20px 0; *@
+        z-index: 100;
     }
 
     .step {
         text-align: center;
-        position: relative;
-        flex: 1;
+        z-index: 100;
+    }
+
+    .step > div {
+        background-color: white;
     }
 
     .step .circle {
         width: 30px;
         height: 30px;
-        background-color: #ddd;
+        @* background-color: #ddd; *@
         border-radius: 50%;
         margin: 0 auto;
         line-height: 30px;
         color: #fff;
         font-weight: bold;
-    }
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-    .step.completed .circle {
-        background-color: #28a745;
-    }
 
-    .step.active .circle {
-        background-color: #007BFF;
+        
+        @* border-color: #11e402 !important;
+        border-image-slice: 1 !important;
+        color: #11e402 !important;
+        box-sizing: border-box !important;
+        border-radius: 100% !important; *@
     }
 
     .step p {
@@ -115,31 +236,14 @@
         color: #555;
     }
 
-    .step::after {
-        content: '';
-        width: 100%;
-        height: 4px;
-        background-color: #ddd;
-        position: absolute;
-        top: 13px;
-        left: 50%;
-        z-index: -1;
-    }
-
-    .step.completed::after {
-        background-color: #28a745;
-    }
-
-    .step:last-child::after {
-        display: none;
-    }
 
     /* Nút hành động */
     .order-actions {
         margin-top: 20px;
     }
 
-    .btn-back, .btn-support {
+    .btn-back,
+    .btn-support {
         display: inline-block;
         padding: 10px 20px;
         margin: 5px;
@@ -161,4 +265,61 @@
     .btn-support:hover {
         background-color: #218838;
     }
+
+    .tracking-steps .bar {
+        position: absolute;
+        height: 4px;
+        width: 0%;
+        /* Ban đầu thanh tiến trình có chiều rộng là 0% */
+        background-color: #11e402;
+        transition: width 1s ease;
+        z-index: -1;
+    }
+
+    .tracking-steps .bar-background {
+        position: absolute;
+        height: 4px;
+        width: 100%;
+        /* Đường tiến trình ảo luôn chiếm 100% */
+        background-color: #ccc;
+        /* Màu xám nhạt */
+        opacity: 0.3;
+        /* Làm mờ đường tiến trình ảo */
+        z-index: -2;
+        /* Đặt phía sau thanh chính */
+    }
 </style>
+
+<script>
+    const status = +@Model.Order.Status;
+
+    // Lấy tất cả các phần tử của step và thanh bar
+    const steps = document.querySelectorAll('.tracking-steps .step');
+    const bar = document.querySelector('.tracking-steps .bar');
+
+    // Hàm cập nhật tiến trình và các vòng tròn
+    function updateTrackingSteps(status) {
+        // Cập nhật chiều rộng của thanh tiến trình (bar)
+        bar.style.width = `${((status - 1) / 3) * 100}%`; // Chia cho 4 để hoàn thành 100%
+
+        // Duyệt qua từng bước và thay đổi màu sắc của các vòng tròn
+        // Step: 0, 1, 2, 3
+        // status: 1, 2, 3, 4
+        steps.forEach((step, index) => {
+            const circle = step.querySelector('.circle');
+            // Cập nhật màu sắc dựa trên trạng thái
+            if (index < status) {
+                circle.style.backgroundColor = "rgba(17, 228, 2, 1)";
+                circle.style.color = "#fff";
+                circle.style.borderColor = "#11e402";
+            } else if (index === status) {
+                circle.style.color = "#11e402";
+                circle.style.borderColor = "#11e402";
+            } 
+        });
+    }
+
+    // Gọi hàm để cập nhật giao diện theo trạng thái của đơn hàng
+    updateTrackingSteps(status);
+
+</script>

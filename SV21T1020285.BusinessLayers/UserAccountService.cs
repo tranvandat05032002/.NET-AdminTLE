@@ -28,6 +28,16 @@ namespace SV21T1020285.BusinessLayers
             }
         }
 
+        public static int Register(UserTypes userTypes, string fullName, string email, string password)
+        {
+            if (userTypes != UserTypes.Customer)
+            {
+                throw new UnauthorizedAccessException("Không thể sử dụng chức năng này.");
+            }
+
+            return CustomerAccountDB.Register(fullName, email, password);
+        }
+
         public static Account? GetAccount(int id)
         {
             return AccountDB.Get(id);
@@ -39,10 +49,12 @@ namespace SV21T1020285.BusinessLayers
             return AccountDB.Update(data);
         }
 
-        public static bool VerifyPassword(int userId, string password) {
+        public static bool VerifyPassword(int userId, string password)
+        {
             return AccountDB.VerifyPassword(userId, password);
         }
-        public static bool UpdatePassword(int userId, string newPassword) {
+        public static bool UpdatePassword(int userId, string newPassword)
+        {
             return AccountDB.UpdatePassword(userId, newPassword);
         }
     }

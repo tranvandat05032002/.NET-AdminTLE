@@ -44,7 +44,8 @@ namespace SV21T1020285.BusinessLayers
         {
             return customerDB.List();
         }
-        public static Customer? GetCustomer(int id) {
+        public static Customer? GetCustomer(int id)
+        {
             return customerDB.Get(id);
         }
         /// <summary>
@@ -52,18 +53,22 @@ namespace SV21T1020285.BusinessLayers
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>/
-        public static int AddCustomer(Customer data) {
+        public static int AddCustomer(Customer data)
+        {
             return customerDB.Add(data);
         }
 
-        public static bool UpdateCustomer(Customer data) {
+        public static bool UpdateCustomer(Customer data)
+        {
             return customerDB.Update(data);
         }
 
-        public static bool DeleteCustomer(int id) {
+        public static bool DeleteCustomer(int id)
+        {
             return customerDB.Delete(id);
         }
-        public static bool InUsedCustomer(int id) {
+        public static bool InUsedCustomer(int id)
+        {
             return customerDB.InUse(id);
         }
         // Category
@@ -76,7 +81,8 @@ namespace SV21T1020285.BusinessLayers
             rowCount = categoryDB.Count(searchValue);
             return categoryDB.List(page, pageSize, searchValue);
         }
-        public static Category? GetCategory(int id) {
+        public static Category? GetCategory(int id)
+        {
             return categoryDB.Get(id);
         }
         /// <summary>
@@ -84,18 +90,22 @@ namespace SV21T1020285.BusinessLayers
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>/
-        public static int AddCategory(Category data) {
+        public static int AddCategory(Category data)
+        {
             return categoryDB.Add(data);
         }
 
-        public static bool UpdateCategory(Category data) {
+        public static bool UpdateCategory(Category data)
+        {
             return categoryDB.Update(data);
         }
 
-        public static bool DeleteCategory(int id) {
+        public static bool DeleteCategory(int id)
+        {
             return categoryDB.Delete(id);
         }
-        public static bool InUsedCategory(int id) {
+        public static bool InUsedCategory(int id)
+        {
             return categoryDB.InUse(id);
         }
         // Supplier
@@ -108,7 +118,8 @@ namespace SV21T1020285.BusinessLayers
             rowCount = supplierDB.Count(searchValue);
             return supplierDB.List(page, pageSize, searchValue);
         }
-        public static Supplier? GetSupplier(int id) {
+        public static Supplier? GetSupplier(int id)
+        {
             return supplierDB.Get(id);
         }
         /// <summary>
@@ -116,18 +127,22 @@ namespace SV21T1020285.BusinessLayers
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>/
-        public static int AddSupplier(Supplier data) {
+        public static int AddSupplier(Supplier data)
+        {
             return supplierDB.Add(data);
         }
 
-        public static bool UpdateSupplier(Supplier data) {
+        public static bool UpdateSupplier(Supplier data)
+        {
             return supplierDB.Update(data);
         }
 
-        public static bool DeleteSupplier(int id) {
+        public static bool DeleteSupplier(int id)
+        {
             return supplierDB.Delete(id);
         }
-        public static bool InUsedSupplier(int id) {
+        public static bool InUsedSupplier(int id)
+        {
             return supplierDB.InUse(id);
         }
         //Shipper
@@ -136,7 +151,12 @@ namespace SV21T1020285.BusinessLayers
             rowCount = shipperDB.Count(searchValue);
             return shipperDB.List(page, pageSize, searchValue);
         }
-        public static Shipper? GetShipper(int id) {
+        public static List<Shipper> ListOfShippers()
+        {
+            return shipperDB.List();
+        }
+        public static Shipper? GetShipper(int id)
+        {
             return shipperDB.Get(id);
         }
         /// <summary>
@@ -144,18 +164,22 @@ namespace SV21T1020285.BusinessLayers
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>/
-        public static int AddShipper(Shipper data) {
+        public static int AddShipper(Shipper data)
+        {
             return shipperDB.Add(data);
         }
 
-        public static bool UpdateShipper(Shipper data) {
+        public static bool UpdateShipper(Shipper data)
+        {
             return shipperDB.Update(data);
         }
 
-        public static bool DeleteShipper(int id) {
+        public static bool DeleteShipper(int id)
+        {
             return shipperDB.Delete(id);
         }
-        public static bool InUsedShipper(int id) {
+        public static bool InUsedShipper(int id)
+        {
             return shipperDB.InUse(id);
         }
         // Employee
@@ -164,7 +188,8 @@ namespace SV21T1020285.BusinessLayers
             rowCount = shipperDB.Count(searchValue);
             return employeeDB.List(page, pageSize, searchValue);
         }
-        public static Employee? GetEmployee(int id) {
+        public static Employee? GetEmployee(int id)
+        {
             return employeeDB.Get(id);
         }
         /// <summary>
@@ -172,18 +197,22 @@ namespace SV21T1020285.BusinessLayers
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>/
-        public static int AddEmployee(Employee data) {
+        public static int AddEmployee(Employee data)
+        {
             return employeeDB.Add(data);
         }
 
-        public static bool UpdateEmployee(Employee data) {
+        public static bool UpdateEmployee(Employee data)
+        {
             return employeeDB.Update(data);
         }
 
-        public static bool DeleteEmployee(int id) {
+        public static bool DeleteEmployee(int id)
+        {
             return employeeDB.Delete(id);
         }
-        public static bool InUsedEmployee(int id) {
+        public static bool InUsedEmployee(int id)
+        {
             return employeeDB.InUse(id);
         }
         //Province

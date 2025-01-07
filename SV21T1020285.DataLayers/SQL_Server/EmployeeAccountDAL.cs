@@ -1,3 +1,4 @@
+using System.Data;
 using Dapper;
 using SV21T1020285.DomainModels;
 namespace SV21T1020285.DataLayers.SQL_Server
@@ -30,6 +31,11 @@ namespace SV21T1020285.DataLayers.SQL_Server
             }
 
             return data;
+        }
+
+        public int Register(string fullName, string email, string password)
+        {
+            throw new UnauthorizedAccessException("Không thể sử dụng chức năng này.");
         }
 
         public bool ChangePassword(string username, string password)

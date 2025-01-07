@@ -1,6 +1,6 @@
 @model SV21T1020285.MeteorShop.Models.PaginationProductSearchInput
 @{
-    ViewBag.Title = "";
+   ViewBag.Title = "";
 }
 <div class="container-fluid">
    <div class="row pb-3">
@@ -8,30 +8,41 @@
          <form id="frmSearchInput" class="text-center" action="~/Home/Search" method="GET">
             <input type="hidden" name="@nameof(Model.PageSize)" value="@Model.PageSize" />
             <nav class="main-menu d-flex navbar navbar-expand-lg">
-               <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+               <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+                  aria-controls="offcanvasNavbar">
                   <span class="navbar-toggler-icon"></span>
                </button>
-               <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+               <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
+                  aria-labelledby="offcanvasNavbarLabel">
                   <div class="offcanvas-header justify-content-center">
                      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                   </div>
                   <div class="d-flex justify-content-center flex-column">
-                     <div class="col-sm-6 offset-sm-2 offset-md-0 w-100 d-none d-lg-block" style="display: flex !important; justify-content: center;">
-                        <div class="search-bar row bg-light p-1 my-2 rounded-5" style="border: 2px solid #ddd; position: relative;">
+                     <div class="col-sm-6 offset-sm-2 offset-md-0 w-100 d-none d-lg-block"
+                        style="display: flex !important; justify-content: center;">
+                        <div class="search-bar row bg-light p-1 my-2 rounded-5"
+                           style="border: 2px solid #ddd; position: relative;">
                            <div style="width: 95%; position: relative; padding: 0px 30px 0px 20px;">
-                              <input type="text" class="input-search form-control border-0 bg-transparent" name="@nameof(Model.SearchValue)" value="@Model.SearchValue" style="outline: none;" placeholder="Tìm kiếm tên sản phẩm" />
+                              <input type="text" class="input-search form-control border-0 bg-transparent"
+                                 name="@nameof(Model.SearchValue)" value="@Model.SearchValue" style="outline: none;"
+                                 placeholder="Tìm kiếm tên sản phẩm" />
                            </div>
-                           <div class="col-1" style="position: absolute; top: 50%; right: 0%; transform: translateY(-50%);">
-                           <button class="" style="background-color: white; border: none; outline: none;" type="submit">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                    <path fill="currentColor" d="M21.71 20.29L18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 7-7a7 7 0 0 1-7 7Z" />
-                                </svg>
-                            </button>
+                           <div class="col-1"
+                              style="position: absolute; top: 50%; right: 0%; transform: translateY(-50%);">
+                              <button class="" style="background-color: white; border: none; outline: none;"
+                                 type="submit">
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path fill="currentColor"
+                                       d="M21.71 20.29L18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 7-7a7 7 0 0 1-7 7Z" />
+                                 </svg>
+                              </button>
                            </div>
                         </div>
                      </div>
-                     <div class="offcanvas-body justify-content-center" style="display: flex; align-items: center; width: 100%;">
-                        <select class="filter-categories p-2 rounded-2 mb-0 me-5" style="border: 1px solid #ddd" name="CategoryID">
+                     <div class="offcanvas-body justify-content-center"
+                        style="display: flex; align-items: center; width: 100%;">
+                        <select class="filter-categories p-2 rounded-2 mb-0 me-5" style="border: 1px solid #ddd"
+                           name="CategoryID">
                            <option value="">Chọn loại sản phẩm</option>
                            @foreach (var item in SV21T1020285.BusinessLayers.CommonDataService.ListOfCategories())
                            {
@@ -45,7 +56,8 @@
                               }
                            }
                         </select>
-                        <select class="filter-categories p-2 rounded-2 mb-0 me-5" style="border: 1px solid #ddd" name="SupplierID">
+                        <select class="filter-categories p-2 rounded-2 mb-0 me-5" style="border: 1px solid #ddd"
+                           name="SupplierID">
                            <option value="">Chọn nhà cung cấp</option>
                            @foreach (var item in SV21T1020285.BusinessLayers.CommonDataService.ListOfSuppliers())
                            {
@@ -59,15 +71,20 @@
                               }
                            }
                         </select>
-                        <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0" style="display: flex; align-items: center; gap-x: 10px;">
+                        <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0"
+                           style="display: flex; align-items: center; gap-x: 10px;">
                            <li class="nav-item active d-flex" style="gap: 0px 10px;">
                               <div class="d-flex" style="gap: 0px 10px;">
                                  <label>Giá từ:</label>
-                                 <input type="text" class="form-control select2 number-separator" style="height: 32px; width: 100px; border: 1px solid #ddd;" name="@nameof(Model.MinPrice)" value="@Model.MinPrice">
+                                 <input type="text" class="form-control select2 number-separator"
+                                    style="height: 32px; width: 100px; border: 1px solid #ddd;"
+                                    name="@nameof(Model.MinPrice)" value="@Model.MinPrice">
                               </div>
                               <div class="d-flex" style="gap: 0px 10px;">
                                  <label>Đến:</label>
-                                 <input type="text" class="form-control select2 number-separator" style="height: 32px; width: 100px; border: 1px solid #ddd;" name="@nameof(Model.MaxPrice)" value="@Model.MaxPrice">
+                                 <input type="text" class="form-control select2 number-separator"
+                                    style="height: 32px; width: 100px; border: 1px solid #ddd;"
+                                    name="@nameof(Model.MaxPrice)" value="@Model.MaxPrice">
                               </div>
                            </li>
                         </ul>
@@ -77,38 +94,38 @@
             </nav>
          </form>
       </div>
-         <div id="searchResult">
+      <div id="searchResult">
 
-         </div>
+      </div>
    </div>
 </div>
 
 @section scripts {
-    <script>
-        function doSearch(page) {
-            var searchCondition = $("#frmSearchInput").serializeArray();
-            searchCondition.push({name: "page", value: page});
+   <script>
+      function doSearch(page) {
+         var searchCondition = $("#frmSearchInput").serializeArray();
+         searchCondition.push({ name: "page", value: page });
 
-            var action = $("#frmSearchInput").prop("action");
-            var method = $("#frmSearchInput").prop("method");
+         var action = $("#frmSearchInput").prop("action");
+         var method = $("#frmSearchInput").prop("method");
 
-            $.ajax({
-                url: action,
-                type: method,
-                data: searchCondition,
-                success: function(data) {
-                    $("#searchResult").html(data);
-                }
-            });
-        }
+         $.ajax({
+            url: action,
+            type: method,
+            data: searchCondition,
+            success: function (data) {
+               $("#searchResult").html(data);
+            }
+         });
+      }
 
-        $(document).ready(function () {
+      $(document).ready(function () {
          console.log("abc");
-            doSearch(@Model.Page)
-            $("#frmSearchInput").submit(function(e) {
-                e.preventDefault();
-                doSearch(1);
-            })
-        });
-    </script>
+         doSearch(@Model.Page)
+         $("#frmSearchInput").submit(function (e) {
+            e.preventDefault();
+            doSearch(1);
+         })
+      });
+   </script>
 }

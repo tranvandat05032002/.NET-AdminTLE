@@ -1,0 +1,68 @@
+@model SV21T1020285.MeteorShop.Models.PaginationOrderSearchInput
+@{
+    ViewBag.Title = "";
+}
+
+<div class="box box-primary">
+    <div class="box-body" style="margin: 20px 0px;">
+        <!-- Form đầu vào tìm kiếm với căn giữa -->
+        <form id="frmSearchInput" action="~/Order/Search" method="GET" class="text-center">
+            <input type="hidden" name="@nameof(Model.PageSize)" value="@Model.PageSize" />
+            <div class="row d-flex justify-content-center align-items-lg-center">
+                <div class="col-sm-2">
+                    <p class="mb-0">Lọc theo trạng thái:</p>
+                </div>
+                <div class="col-sm-2">
+                    <select class="form-control" name="@nameof(Model.Status)" onchange="doSearch(1)">
+                        <option value="0">-- Trạng thái --</option>
+                        <option value="1">Đơn hàng mới (chờ duyệt)</option>
+                        <option value="2">Đơn hàng đã duyệt (chờ chuyển hàng)</option>
+                        <option value="3">Đơn hàng đang được giao</option>
+                        <option value="4">Đơn hàng đã hoàn tất thành công</option>
+                        <option value="-1">Đơn hàng bị hủy</option>
+                        <option value="-2">Đơn hàng bị từ chối</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+        <!-- Hiển thị kết quả tìm kiếm -->
+    </div>
+    <div id="searchResult">
+        <!-- Kết quả tìm kiếm sẽ được hiển thị ở đây -->
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        function doSearch(page) {
+            var searchCondition = $("#frmSearchInput").serializeArray();
+            searchCondition.push({ name: "page", value: page });
+
+            var action = $("#frmSearchInput").prop("action");
+            var method = $("#frmSearchInput").prop("method");
+
+            $.ajax({
+                url: action,
+                type: method,
+                data: searchCondition,
+                success: function (data) {
+                    $("#searchResult").html(data); // Cập nhật kết quả tìm kiếm
+                },
+                error: function () {
+                    alert("Đã xảy ra lỗi khi tìm kiếm!");
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            // Lấy kết quả tìm kiếm khi trang được tải
+            doSearch(@Model.Page);
+
+            // Xử lý sự kiện gửi form qua AJAX khi người dùng nhấn nút submit
+            $("#frmSearchInput").submit(function (e) {
+                e.preventDefault();
+                doSearch(1); // Gửi tìm kiếm với trang đầu tiên
+            });
+        });
+    </script>
+}

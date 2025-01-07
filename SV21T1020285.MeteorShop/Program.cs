@@ -21,12 +21,12 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
                 option.ExpireTimeSpan = TimeSpan.FromDays(360);
             });
 // Thêm policy để kiểm tra quyền truy cập
-builder.Services.AddAuthorization(options => 
+builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("MatchUserId", policy =>
-        policy.RequireAssertion(context => 
+        policy.RequireAssertion(context =>
         {
-           var httpContext = context.Resource as HttpContext;
+            var httpContext = context.Resource as HttpContext;
             if (httpContext == null)
             {
                 return false;
@@ -39,7 +39,7 @@ builder.Services.AddAuthorization(options =>
             return userId != null && routeId != null && userId == routeId;
         })
     );
-});            
+});
 
 builder.Services.AddSession(option =>
 {

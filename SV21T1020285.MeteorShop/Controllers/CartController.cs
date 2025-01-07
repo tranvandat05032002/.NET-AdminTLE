@@ -4,8 +4,9 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using SV21T1020285.BusinessLayers;
 using SV21T1020285.DomainModels;
 using System.Web;
+using Microsoft.AspNetCore.Authorization;
 namespace SV21T1020285.MeteorShop.Controllers;
-
+[Authorize]
 public class CartController : Controller
 {
 
@@ -15,7 +16,8 @@ public class CartController : Controller
         var userId = HttpContext.User.FindFirst("UserId")?.Value;
 
 
-        if(userId != null) {
+        if (userId != null)
+        {
 
             int CustomerID = Convert.ToInt32(userId);
             int CartID = 0;
@@ -40,7 +42,8 @@ public class CartController : Controller
     {
         var userId = HttpContext.User.FindFirst("UserId")?.Value;
 
-        if(userId != null) {
+        if (userId != null)
+        {
             int CustomerID = Convert.ToInt32(userId);
             int CartID = CartDataService.GetCartIDByCustomerID(CustomerID);
             if (!CartDataService.CheckExistsCart(CustomerID))
@@ -53,7 +56,7 @@ public class CartController : Controller
                 CartID = CartDataService.GetCartIDByCustomerID(CustomerID);
             }
 
-            if(!CartDataService.CheckExistsCartItem(CartID, Convert.ToInt32(ProductID)))
+            if (!CartDataService.CheckExistsCartItem(CartID, Convert.ToInt32(ProductID)))
             {
                 CartItemSQL cartItem = new CartItemSQL
                 {
@@ -75,7 +78,7 @@ public class CartController : Controller
             var CartItems = CartDataService.ListOfCartItems(CartID);
             return View(CartItems);
         }
-        
+
         return RedirectToAction("Login", "Account");
     }
 
@@ -92,21 +95,22 @@ public class CartController : Controller
         bool result = CartDataService.UpdateQuantityCartItem(CartItemID, Quantity);
         return RedirectToAction("Index");
     }
-    
-    // Đặt hàng từ khách hàng
-    public IActionResult Init () 
-    {
-         var userId = HttpContext.User.FindFirst("UserId")?.Value;
-         int customerID = Convert.ToInt32(userId);
-         Customer user = CommonDataService.GetCustomer(customerID);
 
-         if(customerID != null) {
-             var data = UserAccountService.GetAccount(customerID);
+    // Đặt hàng từ khách hàng
+    public IActionResult Init()
+    {
+        var userId = HttpContext.User.FindFirst("UserId")?.Value;
+        int customerID = Convert.ToInt32(userId);
+        Customer user = CommonDataService.GetCustomer(customerID);
+
+        if (customerID != 0)
+        {
+            var data = UserAccountService.GetAccount(customerID);
             // Lấy thông tin khách hàng
             int cartID = 0;
 
             if (CartDataService.CheckExistsCart(customerID))
-            { 
+            {
                 // Lấy CartID thông qua CustomerID
                 cartID = CartDataService.GetCartIDByCustomerID(customerID);
 
@@ -116,7 +120,8 @@ public class CartController : Controller
 
                 //  Thêm vào OrderDetails và Order
                 List<OrderDetail> orderDetails = new List<OrderDetail>();
-                foreach (var cartItem in cartItems) {
+                foreach (var cartItem in cartItems)
+                {
                     orderDetails.Add(
                         new OrderDetail()
                         {
@@ -127,16 +132,19 @@ public class CartController : Controller
                     );
                 }
                 int orderID = OrderDataService.InitOrder(employeeID, customerID, data.Province, data.Address, orderDetails);
-                
+
+                Console.WriteLine("Running");
+
                 // Xóa tất cả mặt hàng trong giỏ hàng.
                 bool result = CartDataService.DeleteCart(cartID);
-                if(!result) 
+                if (!result)
                 {
                     Console.WriteLine("Lỗi trong quá trình xóa giỏ hàng");
                 }
-                
+                Console.WriteLine("Running");
                 // return Json(orderID);
-                return RedirectToAction("ProcessOrder", "Order");
+                // return RedirectToAction("ProcessOrder", "Order");
+                return RedirectToAction("ProcessOrder", "Order", new { id = orderID });
 
             }
         }

@@ -313,6 +313,10 @@ h6 {
   background: #fff;
 }
 
+.btn-meteor {
+  background: linear-gradient(90deg, #fdc4db, #4cb7ff, #ffc2db);
+}
+
 .preloader-wrapper .preloader {
   margin: 20% auto 0;
   transform: translateZ(0);
@@ -1191,3 +1195,64 @@ tr.total-data td strong {
     transform: translateY(0);
   }
 }
+
+/* Các màu sắc cho trạng thái đơn hàng */
+.status-label {
+  padding: 5px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.status-label.loading {
+  background-color: #faf1e4;
+  color: #f0ad4e;
+}
+
+.status-label.accept {
+  background-color: #d5f4fb;
+  color: #5bc0de;
+}
+
+.status-label.process {
+  background-color: #daedfd;
+  color: #0275d8;
+}
+
+.status-label.done {
+  background-color: #e8fee8;
+  color: #5cb85c;
+}
+
+.status-label.cancel {
+  background-color: #f9e1e1;
+  color: #d9534f;
+}
+
+.status-label.reject {
+  background-color: #ffdad7;
+  color: #f44336;
+}
+
+/* .step .loading > div {
+  background-color: #f0ad4e;
+}
+
+.step .accept > div {
+  background-color: #5bc0de;
+}
+
+.step .process > div {
+  background-color: #0275d8;
+}
+
+.step .done > div {
+  background-color: #5cb85c;
+}
+
+.step .cancel > div {
+  background-color: #d9534f;
+}
+
+.step .reject > div {
+  background-color: #f44336;
+} */

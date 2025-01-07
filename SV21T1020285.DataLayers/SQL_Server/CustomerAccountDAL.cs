@@ -1,3 +1,4 @@
+using System.Data;
 using Dapper;
 using SV21T1020285.DomainModels;
 namespace SV21T1020285.DataLayers.SQL_Server
@@ -30,6 +31,35 @@ namespace SV21T1020285.DataLayers.SQL_Server
             }
 
             return data;
+        }
+
+        public int Register(string fullName, string email, string password)
+        {
+            int id = 0;
+            using (var connection = OpenConnection())
+            {
+                var sql = @"
+            insert into Customers(CustomerName, ContactName, Email, [Password], IsLocked)
+            values(@CustomerName, @CustomerName, @Email, @Password, @IsLocked)
+            select scope_identity();
+            ";
+
+                var parameters = new
+                {
+                    CustomerName = fullName ?? "",
+                    ContactName = fullName ?? "",
+                    Password = password,
+                    Province = "",
+                    Address = "",
+                    Phone = "",
+                    Email = email ?? "",
+                    IsLocked = false
+                };
+                id = connection.ExecuteScalar<int>(sql, parameters, commandType: CommandType.Text);
+                connection.Close();
+            }
+
+            return id;
         }
 
         public bool ChangePassword(string username, string password)

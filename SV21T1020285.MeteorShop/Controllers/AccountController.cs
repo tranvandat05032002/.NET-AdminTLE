@@ -51,6 +51,66 @@ namespace SV21T1020285.MeteorShop.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [AllowAnonymous]
+        public IActionResult Register(string fullName, string email, string confirmPassword, string password)
+        {
+            ViewBag.Title = "Đăng ký";
+
+            if (string.IsNullOrWhiteSpace(fullName))
+            {
+                ModelState.AddModelError("fullName", "Tên khách hàng không được bỏ trống");
+            }
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                ModelState.AddModelError("email", "Email không được bỏ trống");
+            }
+            if (string.IsNullOrWhiteSpace(confirmPassword))
+            {
+                ModelState.AddModelError("confirmPassword", "Nhập lại mật khẩu không được bỏ trống");
+            }
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                ModelState.AddModelError("password", "Mật khẩu không được bỏ trống");
+            }
+            if (password != confirmPassword)
+            {
+                ModelState.AddModelError(nameof(confirmPassword), "Mật khẩu mới và xác nhận mật khẩu không khớp");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.FullName = fullName;
+                ViewBag.Email = email;
+                ViewBag.ConfirmPassword = confirmPassword;
+                ViewBag.Password = password;
+
+                return View("Register"); // Trả dữ liệu về cho view
+            }
+
+            // var userAccount = UserAccountService.Authorize(UserTypes.Customer, email, password);
+            // if (userAccount == null)
+            // {
+            //     ModelState.AddModelError("Error", "Email hoặc mật khẩu không đúng!");
+            //     return View();
+            // }
+
+            // WebUserData userData = new WebUserData()
+            // {
+            //     UserId = userAccount.UserId,
+            //     UserName = userAccount.UserName,
+            //     DisplayName = userAccount.DisplayName,
+            //     Photo = userAccount.Photo,
+            // };
+
+            // await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, userData.CreatePrincipal());
+            int n = UserAccountService.Register(UserTypes.Customer, fullName, email, password);
+            if (n > 0)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            return View();
+        }
+
         public IActionResult Info(int id = 0)
         {
             ViewBag.Title = "Thông tin cá nhân";
@@ -103,11 +163,13 @@ namespace SV21T1020285.MeteorShop.Controllers
             {
                 return View("Edit", data); // Trả dữ liệu về cho view
             }
-            if(uploadPhoto != null) {
+            if (uploadPhoto != null)
+            {
                 string fileName = $"{DateTime.Now.Ticks}--{uploadPhoto.FileName}";
                 string folder = @"~/images/customer"; // Alias Path
                 string filePath = Path.Combine(ApplicationContext.WebRootPath, @"images/customer", fileName);
-                using(var stream = new FileStream(filePath, FileMode.Create)) {
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
                     uploadPhoto.CopyTo(stream);
                 }
                 data.Photo = fileName;
@@ -150,7 +212,7 @@ namespace SV21T1020285.MeteorShop.Controllers
         [HttpPost]
         public IActionResult ChangePassword(string oldPassword, string newPassword, string confirmNewPassword)
         {
-           
+
             // Validation cho mật khẩu mới không được để trống và khớp với validation của đăng nhập
             if (string.IsNullOrWhiteSpace(oldPassword))
                 ModelState.AddModelError(nameof(oldPassword), "Vui lòng nhập mật khẩu hiện tại");
@@ -162,27 +224,31 @@ namespace SV21T1020285.MeteorShop.Controllers
             var userData = User.GetUserData();
             var userId = userData.UserId;
             bool checkOldPassword = UserAccountService.VerifyPassword(int.Parse(userId), oldPassword);
-            if(!checkOldPassword) {
+            if (!checkOldPassword)
+            {
                 ModelState.AddModelError(nameof(oldPassword), "Mật khẩu cũ không chính xác");
             }
             // Kiểm tra mật khẩu mới không được trùng với mật khẩu cũ
-            if(newPassword == oldPassword){
+            if (newPassword == oldPassword)
+            {
                 ModelState.AddModelError(nameof(newPassword), "Mật khẩu mới không được trùng với mật khẩu cũ");
             }
             // Mật khẩu mới và nhập lại mật khẩu mới khải khớp nhau
-            if(newPassword != confirmNewPassword) {
+            if (newPassword != confirmNewPassword)
+            {
                 ModelState.AddModelError(nameof(confirmNewPassword), "Mật khẩu mới và xác nhận mật khẩu không khớp");
             }
             if (!ModelState.IsValid)
             {
-                return View("ChangePassword"); 
+                return View("ChangePassword");
             }
 
             // Cập nhật mật khẩu
             bool result = UserAccountService.UpdatePassword(int.Parse(userId), newPassword);
-            if(!result) {
+            if (!result)
+            {
                 ModelState.AddModelError("Error", "Cập nhật mật khẩu không thành công");
-                return View("ChangePassword"); 
+                return View("ChangePassword");
             }
 
             return RedirectToAction("Index", "Home");
