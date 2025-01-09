@@ -1233,6 +1233,17 @@ tr.total-data td strong {
   color: #f44336;
 }
 
+.cart-table tbody tr {
+  text-align: center; /* Căn giữa văn bản */
+  vertical-align: middle; /* Căn giữa theo chiều dọc */
+  border: 1px solid #efefef;
+}
+
+.cart-table tbody td {
+  padding: 10px; /* Tùy chọn: thêm khoảng cách để bảng trông đẹp hơn */
+  border: 1px solid #efefef;
+}
+
 /* .step .loading > div {
   background-color: #f0ad4e;
 }

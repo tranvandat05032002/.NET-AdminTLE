@@ -1,3 +1,4 @@
+@using System.Globalization
 @model OrderDetailModel
 @{
     string description = Model.Order.StatusDescription;
@@ -18,19 +19,21 @@
 
     // Định dạng thời gian theo kiểu 24 giờ
     string vietnamDateString = vietnamDate.ToString("dd/MM/yyyy HH:mm:ss");
+
+    decimal totalPrice = 0m;
+
     ViewData["Title"] = "";
 }
 
 <!-- Giao diện Theo Dõi Đơn Hàng -->
 <div class="order-tracking-container">
-    <div class="d-flex justify-content-between align-items-center">
+    <div class="d-flex justify-content-between align-items-center" style="margin-bottom: -20px;">
         <div class="update-button">
             <a href="~/Order/Index" class="btn btn-light">
                 <i class="fa-solid fa-arrow-left" style="margin-right: 5px;"></i>
                 Quay lại
             </a>
         </div>
-        @* <h1 class="tracking-title p-0 m-0">Theo Dõi Đơn Hàng</h1> *@
         @if (@Model.Order.Status == 1)
         {
             <div>
@@ -76,6 +79,49 @@
         <p><strong>Thành Phố: </strong> @Model.Order.DeliveryProvince</p>
         <p><strong>Địa Chỉ: </strong>@Model.Order.DeliveryAddress</p>
         <p><strong>Ngày Đặt Hàng: </strong>@vietnamDateString</p>
+        <p style="margin-bottom: 10px;"><strong>Danh sách sản phẩm đã đặt: </p>
+
+        <table class="cart-table">
+            <thead class="cart-table-head">
+                <tr class="table-head-row">
+                    <th class="product-image" style="font-weight: bold;">Ảnh sản phầm</th>
+                    <th class="product-name" style="font-weight: bold;">Tên sản phẩm</th>
+                    <th class="product-quantity" style="font-weight: bold;">Số lượng</th>
+                    <th class="product-total-price" style="font-weight: bold;">Tổng tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var item in Model.Details)
+                {
+                    totalPrice += item.TotalPrice;
+                    <tr class="table-body-row" style="font-weight: 500;">
+                        <td class="product-image">
+                            <img src="@WebConfig.ADMIN_URL/images/products/@(string.IsNullOrWhiteSpace(item.Photo) ? "default-image.gif" : item.Photo)"
+                                                    alt="Ảnh mô tả sản phẩm">
+                        </td>
+                        <td class="product-name">
+                            @item.ProductName
+                        </td>
+                        <td class="product-quantity">
+                            @item.Quantity
+                        </td>
+                        <td class="product-total-price">
+                            @item.TotalPrice.ToString("#,0",
+                                        CultureInfo.GetCultureInfo("vi-VN")) VNĐ
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="cart-buttons d-flex align-items-center justify-content-end">
+            <div class="">
+                <div class="cart-summary-header">
+                    <h3>Tổng Tiền: <span style="font-weight: 300;">@totalPrice.ToString("#,0",
+                                        CultureInfo.GetCultureInfo("vi-VN")) VNĐ</span></h3>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Tiến Trình Đơn Hàng -->

@@ -20,7 +20,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
+            background-color: #ffff;
             margin: 0;
             padding: 0;
         }
@@ -38,7 +38,7 @@
             display: flex;
             max-width: 1000px;
             margin: 50px auto;
-            background: #ffffff;
+            background: #f4f4f9;
             border-radius: 10px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             overflow: hidden;
@@ -170,7 +170,7 @@
         }
 
         .avatar-label {
-             width: 150px;
+            width: 150px;
             height: 150px;
             border-radius: 50%;
             position: relative;
@@ -198,7 +198,7 @@
             display: none;
         }
 
-         .avatar-label > .avatar-overlay {
+        .avatar-label>.avatar-overlay {
             position: absolute;
             top: 0;
             left: 0;
@@ -232,7 +232,7 @@
 </head>
 
 <body>
-    <form method="POST" action="~/Account/Save" enctype="multipart/form-data"> 
+    <form method="POST" action="~/Account/Save" enctype="multipart/form-data">
         <div class="profile-container">
             <input type="hidden" name="@nameof(Model.AccountID)" value="@Model.AccountID">
             <div class="profile-sidebar">
@@ -246,7 +246,7 @@
                 <div class="avatar-wrapper">
                     <label for="uploadPhoto" class="avatar-label">
                         <div class="avatar-overlay">
-                           <i class="fa-solid fa-camera"></i>
+                            <i class="fa-solid fa-camera"></i>
                         </div>
                         <img id="Photo"
                             src="~/images/customer/@(string.IsNullOrWhiteSpace(Model.Photo) ? "default-image.gif" : Model.Photo)"
